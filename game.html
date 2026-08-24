@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>국어 브루마블 - 게임판</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="board-page">
+    <div class="board-header">
+      <a href="index.html" class="back-link">&larr; 홈으로</a>
+      <div class="turn-indicator" id="turn-indicator">1팀 차례</div>
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <div class="question-panel" id="question-panel">
+      <span class="category-tag" id="category-tag"></span>
+      <p id="question-text"></p>
+      <button id="reveal-btn" class="btn-primary btn-small">정답 확인</button>
+      <p class="answer-reveal" id="answer-text"></p>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

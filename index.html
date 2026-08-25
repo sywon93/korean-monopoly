@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>훈민정음 부루마블</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>국어 모두의 마블</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
@@ -20,358 +20,169 @@
   }
 
   * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; overflow: hidden; }
 
   body {
-    margin: 0;
-    min-height: 100vh;
     background: linear-gradient(160deg, var(--cream) 0%, var(--beige) 100%);
     font-family: 'Gowun Dodum', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
     color: var(--text);
-    padding-bottom: 3rem;
   }
 
   .hidden { display: none !important; }
+  button { font-family: inherit; cursor: pointer; border: none; }
+  select, input { font-family: inherit; }
 
-  button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-  }
-
-  select, input {
-    font-family: inherit;
-  }
-
-  /* ---------- 버튼 공통 ---------- */
   .btn-primary, .btn-secondary, .btn-danger {
     border-radius: 999px;
     font-weight: 700;
-    padding: 0.7rem 1.4rem;
-    font-size: 1rem;
-    transition: transform 0.15s, box-shadow 0.15s;
+    padding: 0.65rem 1.3rem;
+    font-size: 0.95rem;
+    transition: transform 0.15s;
   }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--mint-deep), var(--mint));
-    color: #2f5a48;
-    box-shadow: 0 6px 14px rgba(99, 201, 166, 0.4);
-  }
-  .btn-secondary {
-    background: var(--card-bg);
-    color: var(--text-soft);
-    border: 2px solid #E9DFCE;
-  }
-  .btn-danger {
-    background: linear-gradient(135deg, #FF9E8F, #FFC2B4);
-    color: #7a2e20;
-    box-shadow: 0 6px 14px rgba(255, 142, 120, 0.4);
-  }
-  .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
-    transform: translateY(-2px);
-  }
-  .btn-small { padding: 0.5rem 1rem; font-size: 0.85rem; }
-  .btn-big { padding: 1rem 2.2rem; font-size: 1.2rem; }
-  .btn-block { width: 100%; text-align: center; }
+  .btn-primary { background: linear-gradient(135deg, var(--mint-deep), var(--mint)); color: #2f5a48; box-shadow: 0 6px 14px rgba(99,201,166,0.4); }
+  .btn-secondary { background: var(--card-bg); color: var(--text-soft); border: 2px solid #E9DFCE; }
+  .btn-danger { background: linear-gradient(135deg, #FF9E8F, #FFC2B4); color: #7a2e20; box-shadow: 0 6px 14px rgba(255,142,120,0.4); }
+  .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover { transform: translateY(-2px); }
+  .btn-small { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
+  .btn-big { padding: 1rem 2.2rem; font-size: 1.15rem; }
+  .btn-block { width: 100%; }
 
   /* ---------- 시작 화면 ---------- */
   .setup-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(160deg, var(--cream) 0%, var(--pink) 120%);
-    z-index: 50;
-    padding: 1rem;
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--cream) 0%, var(--pink) 120%); z-index: 200; padding: 1rem;
   }
   .setup-card {
-    background: var(--card-bg);
-    border-radius: 32px;
-    padding: 3rem 2.5rem;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(180, 140, 110, 0.25);
-    max-width: 420px;
-    width: 100%;
+    background: var(--card-bg); border-radius: 28px; padding: 2rem 2.2rem; text-align: center;
+    box-shadow: 0 20px 40px rgba(180,140,110,0.25); max-width: 440px; width: 100%; max-height: 92vh; overflow-y: auto;
   }
-  .setup-card h1 { font-size: 1.8rem; margin: 0 0 0.4rem; }
-  .setup-card p { color: var(--text-soft); margin: 0.2rem 0; }
-  .setup-label { margin-top: 1.6rem; font-weight: 700; }
-  .setup-team-count {
-    display: flex;
-    gap: 0.7rem;
-    justify-content: center;
-    margin: 1rem 0 1.8rem;
-  }
-  .count-btn {
-    background: var(--card-bg);
-    border: 2px solid #E9DFCE;
-    border-radius: 16px;
-    padding: 0.7rem 1.2rem;
-    font-weight: 700;
-    color: var(--text-soft);
-  }
-  .count-btn.selected {
-    background: var(--pink);
-    border-color: var(--pink-deep);
-    color: #7a3a55;
-  }
+  .setup-card h1 { font-size: 1.5rem; margin: 0 0 0.3rem; }
+  .setup-card p { color: var(--text-soft); margin: 0.2rem 0; font-size: 0.9rem; }
+  .setup-label { margin-top: 1.2rem; font-weight: 700; font-size: 0.9rem; }
+  .setup-team-count { display: flex; gap: 0.6rem; justify-content: center; margin: 0.6rem 0 0.8rem; }
+  .count-btn { background: var(--card-bg); border: 2px solid #E9DFCE; border-radius: 14px; padding: 0.6rem 1rem; font-weight: 700; color: var(--text-soft); }
+  .count-btn.selected { background: var(--pink); border-color: var(--pink-deep); color: #7a3a55; }
+  .setup-row { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 0.5rem 0; text-align: left; }
+  .setup-row label { font-weight: 700; font-size: 0.85rem; flex: 1; }
+  .setup-row input { width: 90px; padding: 0.45rem 0.6rem; border-radius: 12px; border: 2px solid #E9DFCE; text-align: center; }
+  #start-game-btn { margin-top: 1.3rem; }
 
-  /* ---------- 앱 헤더 ---------- */
-  #app { max-width: 900px; margin: 0 auto; padding: 1.2rem 1rem; }
+  /* ---------- 앱 레이아웃 ---------- */
+  #app { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
 
   .app-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-    margin-bottom: 1.2rem;
+    flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8vh 1.2vw; gap: 0.6vw;
   }
-  .app-title { font-size: 1.5rem; font-weight: 700; margin: 0; }
-  .app-title span { color: var(--pink-deep); }
-  .fund-badge {
-    background: var(--card-bg);
-    border-radius: 999px;
-    padding: 0.5rem 1.1rem;
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(180, 140, 110, 0.15);
+  .app-title { font-size: clamp(0.9rem, 1.9vw, 1.3rem); font-weight: 700; margin: 0; white-space: nowrap; }
+  .header-stats { display: flex; gap: 0.6vw; align-items: center; flex-wrap: wrap; }
+  .stat-badge {
+    background: var(--card-bg); border-radius: 999px; padding: 0.35rem 0.85rem; font-weight: 700;
+    font-size: clamp(0.65rem, 1.3vw, 0.85rem); box-shadow: 0 3px 8px rgba(180,140,110,0.15); white-space: nowrap;
   }
   .teacher-btn {
-    background: var(--pink);
-    color: #7a3a55;
-    border-radius: 999px;
-    padding: 0.6rem 1.2rem;
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(255, 158, 187, 0.4);
+    background: var(--pink); color: #7a3a55; border-radius: 999px; width: clamp(2.2rem, 4vw, 2.8rem); height: clamp(2.2rem, 4vw, 2.8rem);
+    font-size: clamp(1rem, 2vw, 1.3rem); box-shadow: 0 4px 10px rgba(255,158,187,0.4); flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
   }
 
-  /* ---------- 메인 컨트롤 카드 ---------- */
-  .main-controls {
-    background: var(--card-bg);
-    border-radius: 28px;
-    box-shadow: 0 12px 26px rgba(180, 140, 110, 0.18);
-    max-width: 480px;
-    margin: 0 auto 1.6rem;
-    padding: 1.6rem;
-    text-align: center;
-  }
-  .turn-indicator {
-    display: inline-block;
-    padding: 0.5rem 1.4rem;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    border: 3px solid var(--pink-deep);
-    background: var(--pink);
-    margin-bottom: 1rem;
-  }
-  .dice-display {
-    font-size: 4rem;
-    line-height: 1;
-    margin: 0.4rem 0 1rem;
-  }
-  .dice-display.rolling { animation: diceShake 0.08s linear infinite; }
-  @keyframes diceShake {
-    0% { transform: rotate(-8deg) scale(1); }
-    50% { transform: rotate(8deg) scale(1.08); }
-    100% { transform: rotate(-8deg) scale(1); }
-  }
-  #roll-btn { font-size: 1.3rem; padding: 1rem 2.4rem; }
-  .catch-btn-wrap { margin-top: 1.2rem; }
-  #catch-btn-main { width: 100%; }
+  /* ---------- 메인 영역 ---------- */
+  .main-area { flex: 1 1 auto; display: flex; overflow: hidden; padding: 0 1.2vw 1.2vh; gap: 1vw; }
 
-  /* ---------- 보드판 ---------- */
-  .board-wrap {
-    position: relative;
-    max-width: 700px;
-    margin: 0 auto 2rem;
-  }
+  .board-wrap { flex: 0 0 auto; height: 100%; aspect-ratio: 1; position: relative; }
   .board {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    gap: 6px;
-    aspect-ratio: 1;
-    background: #FBE9D8;
-    border-radius: 28px;
-    padding: 10px;
-    box-shadow: 0 14px 30px rgba(180, 140, 110, 0.2);
+    width: 100%; height: 100%; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
+    gap: 0.35vh; background: #FBE9D8; border-radius: 22px; padding: 0.7vh; box-shadow: 0 14px 30px rgba(180,140,110,0.2);
   }
   .square {
-    border-radius: 16px;
-    background: var(--card-bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1px;
-    text-align: center;
-    padding: 2px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: var(--text);
-    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.6);
-    transition: background 0.3s;
-    position: relative;
-    overflow: hidden;
+    border-radius: 12px; background: var(--card-bg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1px; text-align: center; padding: 1px; font-weight: 700; color: var(--text); position: relative; overflow: hidden;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.6); transition: background 0.3s;
   }
   .square.type-start { background: var(--pink); }
-  .square.type-prison { background: #D7D0F0; }
-  .square.type-chance { background: #FFE9B8; }
-  .square.type-teleport { background: #C9E7FF; }
-  .square.type-fund { background: #FFD9A0; }
-  .square.owned { box-shadow: inset 0 0 0 3px white, 0 4px 10px rgba(0,0,0,0.15); }
-  .sq-emoji { font-size: 1.15rem; }
-  .sq-name { font-size: 0.58rem; line-height: 1.1; }
-  .sq-price { font-size: 0.55rem; color: var(--text-soft); }
+  .square.type-exile { background: #D7D0F0; }
+  .square.type-olympic { background: #FFD97A; }
+  .square.type-travel { background: #BEE3FF; }
+  .square.owned { box-shadow: inset 0 0 0 3px white, 0 4px 8px rgba(0,0,0,0.2); }
+  .sq-name { font-size: clamp(0.4rem, 0.95vmin, 0.65rem); line-height: 1.05; }
+  .sq-price { font-size: clamp(0.38rem, 0.85vmin, 0.6rem); color: var(--text-soft); }
+  .sq-owner-badge { position: absolute; top: 1px; right: 2px; font-size: clamp(0.5rem, 1.1vmin, 0.75rem); }
+  .sq-star { position: absolute; top: 1px; left: 2px; font-size: clamp(0.45rem, 1vmin, 0.65rem); }
   .sq-tokens { display: flex; gap: 1px; flex-wrap: wrap; justify-content: center; }
-  .token { font-size: 0.85rem; }
+  .token { font-size: clamp(0.55rem, 1.3vmin, 0.85rem); }
 
   .board-center {
-    position: absolute;
-    top: 16.6%;
-    left: 16.6%;
-    width: 66.8%;
-    height: 66.8%;
-    background: var(--card-bg);
-    border-radius: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-shadow: inset 0 0 0 3px var(--pink);
+    position: absolute; top: 12.5%; left: 12.5%; width: 75%; height: 75%; background: var(--card-bg);
+    border-radius: 20px; box-shadow: inset 0 0 0 3px var(--pink); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.6vmin; padding: 1vmin; text-align: center;
   }
-  .board-center-title {
-    font-weight: 700;
-    color: var(--pink-deep);
-    font-size: 1.2rem;
-    line-height: 1.5;
+  .center-title { font-weight: 700; color: var(--pink-deep); font-size: clamp(0.7rem, 1.7vmin, 1rem); }
+  .turn-indicator {
+    padding: 0.3rem 1rem; border-radius: 999px; font-weight: 700; font-size: clamp(0.7rem, 1.6vmin, 1rem);
+    border: 3px solid var(--pink-deep); background: var(--pink);
   }
+  .fund-line, .olympic-line { font-size: clamp(0.6rem, 1.3vmin, 0.85rem); font-weight: 700; color: var(--text-soft); }
+  .dice-row { display: flex; gap: 1vmin; }
+  .die { font-size: clamp(1.6rem, 5vmin, 2.6rem); line-height: 1; }
+  .double-badge { font-weight: 700; color: #d9534f; font-size: clamp(0.6rem, 1.4vmin, 0.85rem); }
+  .roll-btn { position: relative; overflow: hidden; font-size: clamp(0.75rem, 1.7vmin, 1rem); padding: 0.8vmin 2.2vmin; }
+  .roll-btn .gauge { position: absolute; inset: 0; background: rgba(255,255,255,0.5); transform: scaleX(0); transform-origin: left; }
+  .roll-btn.rolling .gauge { animation: gaugeFill 0.72s linear; }
+  @keyframes gaugeFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .roll-btn .roll-label { position: relative; }
 
-  /* ---------- 조 카드 ---------- */
-  .team-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-  }
+  /* ---------- 조 로스터 ---------- */
+  .team-roster { flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8vh; padding-right: 0.3vw; }
   .team-card {
-    background: var(--team-light, var(--card-bg));
-    border: 2px solid var(--team-color, #E9DFCE);
-    border-radius: 20px;
-    padding: 1rem 1.1rem;
+    background: var(--team-light, var(--card-bg)); border: 2px solid var(--team-color, #E9DFCE); border-radius: 16px;
+    padding: 0.7vh 0.9vw; flex: 0 0 auto;
   }
-  .team-card-head {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
-  .team-emoji { font-size: 1.5rem; }
-  .team-money { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.6rem; }
-  .team-lands { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .land-chip {
-    background: rgba(255,255,255,0.7);
-    border-radius: 999px;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-  }
+  .team-card-head { display: flex; align-items: center; gap: 0.4rem; font-weight: 700; font-size: clamp(0.75rem, 1.5vw, 0.95rem); margin-bottom: 0.15rem; }
+  .team-emoji { font-size: clamp(0.95rem, 1.9vw, 1.2rem); }
+  .exile-badge { margin-left: auto; background: #D7D0F0; border-radius: 999px; padding: 0.1rem 0.5rem; font-size: 0.7rem; }
+  .team-money { font-weight: 700; font-size: clamp(0.85rem, 1.7vw, 1.05rem); }
+  .team-meta { font-size: clamp(0.6rem, 1.2vw, 0.75rem); color: var(--text-soft); margin-bottom: 0.3rem; }
+  .team-lands { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .land-chip { background: rgba(255,255,255,0.7); border-radius: 999px; padding: 0.15rem 0.5rem; font-size: clamp(0.55rem, 1.1vw, 0.68rem); font-weight: 700; }
   .land-chip.empty { color: var(--text-soft); font-weight: 400; }
 
   /* ---------- 모달 ---------- */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(90, 70, 50, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 1rem;
-  }
-  .modal-card {
-    background: var(--card-bg);
-    border-radius: 28px;
-    padding: 2rem;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 44px rgba(90, 70, 50, 0.3);
-  }
-  .modal-emoji { font-size: 2.4rem; margin-bottom: 0.4rem; }
-  .modal-card h3 { margin: 0 0 0.8rem; font-size: 1.25rem; }
-  .modal-body { line-height: 1.6; margin-bottom: 1rem; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(90,70,50,0.35); display: flex; align-items: center; justify-content: center; z-index: 300; padding: 1rem; }
+  .modal-card { background: var(--card-bg); border-radius: 24px; padding: 1.6rem; max-width: 420px; width: 100%; max-height: 88vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 44px rgba(90,70,50,0.3); }
+  .modal-emoji { font-size: 2.1rem; margin-bottom: 0.3rem; }
+  .modal-card h3 { margin: 0 0 0.7rem; font-size: 1.1rem; }
+  .modal-body { line-height: 1.55; margin-bottom: 0.9rem; font-size: 0.92rem; }
   .quiz-answer { color: var(--mint-deep); font-weight: 700; }
   .warn { color: #d9534f; font-weight: 700; }
-  .modal-extra { margin-bottom: 1rem; }
-  .teleport-select {
-    padding: 0.6rem 1rem;
-    border-radius: 14px;
-    border: 2px solid #E9DFCE;
-    width: 100%;
-  }
-  .modal-actions {
-    display: flex;
-    gap: 0.6rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  .modal-extra { margin-bottom: 0.9rem; }
+  .teleport-select { padding: 0.55rem 0.9rem; border-radius: 14px; border: 2px solid #E9DFCE; width: 100%; margin-bottom: 0.6rem; }
+  .olympic-mult-row { display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; }
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
 
   /* ---------- 선생님 제어판 ---------- */
-  .side-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: min(360px, 92vw);
-    background: var(--card-bg);
-    box-shadow: -10px 0 30px rgba(90, 70, 50, 0.2);
-    z-index: 90;
-    padding: 1.6rem;
-    overflow-y: auto;
-  }
-  .side-panel-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
-  }
-  .icon-close {
-    background: var(--beige);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-  }
-  .teacher-section {
-    background: var(--cream);
-    border-radius: 20px;
-    padding: 1rem 1.1rem;
-    margin-bottom: 1rem;
-  }
-  .teacher-section label {
-    display: block;
-    font-weight: 700;
-    font-size: 0.85rem;
-    margin: 0.6rem 0 0.3rem;
-  }
-  .teacher-section select, .teacher-section input {
-    width: 100%;
-    padding: 0.6rem 0.8rem;
-    border-radius: 14px;
-    border: 2px solid #E9DFCE;
-    font-size: 0.95rem;
-  }
-  .teacher-btn-row { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+  .side-panel { position: fixed; top: 0; right: 0; height: 100vh; width: min(340px, 92vw); background: var(--card-bg); box-shadow: -10px 0 30px rgba(90,70,50,0.2); z-index: 250; padding: 1.4rem; overflow-y: auto; }
+  .side-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .icon-close { background: var(--beige); border-radius: 50%; width: 30px; height: 30px; font-size: 0.95rem; }
+  .teacher-section { background: var(--cream); border-radius: 18px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
+  .teacher-section label { display: block; font-weight: 700; font-size: 0.82rem; margin: 0.5rem 0 0.25rem; }
+  .teacher-section select, .teacher-section input { width: 100%; padding: 0.55rem 0.75rem; border-radius: 12px; border: 2px solid #E9DFCE; font-size: 0.9rem; }
+  .teacher-btn-row { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
   .teacher-btn-row button { flex: 1; }
   .teacher-catch-btn { line-height: 1.5; }
-  .teacher-catch-btn .sub { font-size: 0.7rem; font-weight: 400; opacity: 0.85; }
+  .teacher-catch-btn .sub { font-size: 0.68rem; font-weight: 400; opacity: 0.85; }
   .fund-info { font-weight: 700; text-align: center; }
 
-  @media (max-width: 520px) {
-    .sq-name { font-size: 0.5rem; }
-    .board-center-title { font-size: 0.9rem; }
-    .dice-display { font-size: 3rem; }
+  /* ---------- 경고 배너 ---------- */
+  .warning-banner {
+    position: fixed; top: 1.5vh; left: 50%; transform: translate(-50%, -140%); z-index: 400;
+    background: linear-gradient(135deg, #FF9E8F, #FFD97A); color: #6b2f14; font-weight: 700;
+    padding: 0.8rem 1.6rem; border-radius: 999px; box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    font-size: clamp(0.75rem, 1.8vw, 1rem); transition: transform 0.35s ease; text-align: center; max-width: 90vw;
+  }
+  .warning-banner.show { transform: translate(-50%, 0); }
+
+  @media (max-width: 900px) {
+    .sq-name { font-size: 0.42rem; }
   }
 </style>
 </head>
@@ -380,12 +191,20 @@
   <!-- ============ 시작 화면 ============ -->
   <div class="setup-overlay" id="setup-overlay">
     <div class="setup-card">
-      <h1>🎎 훈민정음 부루마블</h1>
-      <p>고등학교 국어 수업용 보드게임</p>
+      <h1>🎡 국어 모두의 마블</h1>
+      <p>고등학교 국어 수업용 보드게임 (아이패드 최적화)</p>
       <p class="setup-label">참여할 조 수를 선택하세요</p>
       <div class="setup-team-count" id="setup-team-count">
         <button class="count-btn" data-count="5">5개 조</button>
         <button class="count-btn selected" data-count="6">6개 조</button>
+      </div>
+      <div class="setup-row">
+        <label>최대 턴 수</label>
+        <input type="number" id="setup-maxturns" value="30" min="5" step="1" />
+      </div>
+      <div class="setup-row">
+        <label>제한 시간(분)</label>
+        <input type="number" id="setup-timelimit" value="30" min="5" step="1" />
       </div>
       <button id="start-game-btn" class="btn-primary btn-big">🚀 게임 시작하기</button>
     </div>
@@ -394,28 +213,36 @@
   <!-- ============ 메인 앱 ============ -->
   <div id="app" class="hidden">
     <div class="app-header">
-      <h1 class="app-title">🎎 훈민정음 <span>부루마블</span></h1>
-      <div class="fund-badge" id="fund-badge">💰 환곡: 0원</div>
-      <button class="teacher-btn" id="teacher-btn">👩‍🏫 선생님 제어판</button>
-    </div>
-
-    <div class="main-controls">
-      <div class="turn-indicator" id="turn-indicator">-</div>
-      <div class="dice-display" id="dice-display">🎲</div>
-      <button id="roll-btn" class="btn-primary">🎲 주사위 굴리기</button>
-      <div class="catch-btn-wrap">
-        <button id="catch-btn-main" class="btn-danger">🚫 영어/외래어 사용 적발!</button>
+      <h1 class="app-title">🎡 국어 모두의 마블</h1>
+      <div class="header-stats">
+        <span class="stat-badge" id="turn-counter">턴 0/30</span>
+        <span class="stat-badge" id="time-display">⏱ 30:00</span>
       </div>
+      <button class="teacher-btn" id="teacher-btn">⚙️</button>
     </div>
 
-    <div class="board-wrap">
-      <div class="board" id="board"></div>
-      <div class="board-center">
-        <div class="board-center-title">집현전<br />훈민정음 부루마블</div>
+    <div class="main-area">
+      <div class="board-wrap">
+        <div class="board" id="board"></div>
+        <div class="board-center">
+          <div class="center-title">국어 모두의 마블</div>
+          <div class="turn-indicator" id="turn-indicator">-</div>
+          <div class="fund-line" id="fund-line">💰 환곡: 0골드</div>
+          <div class="olympic-line" id="olympic-line">🎪 축제 없음</div>
+          <div class="dice-row">
+            <span class="die" id="dice1">⚀</span>
+            <span class="die" id="dice2">⚀</span>
+          </div>
+          <div class="double-badge hidden" id="double-badge"></div>
+          <button id="roll-btn" class="btn-primary roll-btn">
+            <span class="gauge" id="gauge"></span>
+            <span class="roll-label">🎲 주사위 굴리기</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <div class="team-cards" id="team-cards"></div>
+      <div class="team-roster" id="team-roster"></div>
+    </div>
   </div>
 
   <!-- ============ 선생님 제어판 ============ -->
@@ -424,29 +251,29 @@
       <h3>👩‍🏫 선생님 제어판</h3>
       <button class="icon-close" id="teacher-close">✕</button>
     </div>
-
     <div class="teacher-section">
       <label>조 선택</label>
       <select id="teacher-team-select"></select>
-      <label>금액 (원)</label>
+      <label>금액 (골드)</label>
       <input type="number" id="teacher-amount" value="10000" step="10000" min="0" />
       <div class="teacher-btn-row">
         <button id="teacher-pay" class="btn-primary btn-small">💸 지급</button>
         <button id="teacher-deduct" class="btn-secondary btn-small">➖ 차감</button>
       </div>
     </div>
-
     <div class="teacher-section">
       <button id="teacher-catch" class="btn-danger btn-block teacher-catch-btn">
-        🚫 영어/외래어 사용 적발!<br />
-        <span class="sub">(현재 턴 조에서 5만원 차감 → 환곡에 적립)</span>
+        🚨 외래어/영어 사용 적발!<br />
+        <span class="sub">(현재 턴 조에서 5만 골드 차감 → 환곡에 적립)</span>
       </button>
     </div>
-
     <div class="teacher-section fund-info">
-      💰 누적 환곡: <strong id="teacher-fund-display">0원</strong>
+      💰 누적 환곡: <strong id="teacher-fund-display">0골드</strong>
     </div>
   </div>
+
+  <!-- ============ 경고 배너 ============ -->
+  <div class="warning-banner" id="warning-banner"></div>
 
   <!-- ============ 공용 모달 ============ -->
   <div class="modal-overlay hidden" id="modal-overlay">
@@ -461,89 +288,125 @@
 
 <script>
   // ============================================================
-  // 보드 데이터 (선생님이 직접 수정하는 곳)
-  // 땅 이름, 가격, 문제, 정답을 자유롭게 바꿔서 사용하세요.
-  // type: "start"(시작점) | "quiz"(문제칸) | "prison"(유배지) |
-  //       "chance"(암행어사/황금열쇠) | "teleport"(축지법) | "fund"(환곡)
+  // 컬러 그룹 (선생님이 수정하는 곳 1/2)
+  // ============================================================
+  const COLOR_GROUPS = {
+    seojeong: { label: "서정시", color: "#FFADAD" },
+    geundae:  { label: "근대소설", color: "#A0C4FF" },
+    jeohang:  { label: "저항시", color: "#CAFFBF" },
+    gojeon:   { label: "고전소설", color: "#BDB2FF" },
+    hyangto:  { label: "향토문학", color: "#FDFFB6" },
+    pansori:  { label: "판소리계문학", color: "#9BF6FF" },
+    supil:    { label: "수필기행", color: "#FFD6A5" },
+    hyeondae: { label: "현대시", color: "#FFC6FF" },
+  };
+  const SIDE_LABELS = { top: "상단", right: "우측", bottom: "하단", left: "좌측" };
+
+  // ============================================================
+  // 보드 데이터 (선생님이 수정하는 곳 2/2)
+  // 땅 이름 / 컬러그룹(group) / 가격(price) / 퀴즈(question, answer)를
+  // 자유롭게 바꿀 수 있습니다. type과 side, id는 보드 구조와 연결되어
+  // 있으니 되도록 유지해주세요.
   // ============================================================
   const boardData = [
-    { id: 0, name: "집현전", type: "start", emoji: "🏯" },
-    { id: 1, name: "메밀꽃 봉평 장터", type: "quiz", emoji: "🌾", price: 100000,
-      question: "이효석의 소설 '메밀꽃 필 무렵'의 배경이 되는 지역은 어디일까요?", answer: "봉평(평창)", owner: null },
-    { id: 2, name: "별 헤는 밤 언덕", type: "quiz", emoji: "🌌", price: 110000,
-      question: "시 '별 헤는 밤'을 쓴 시인은 누구일까요?", answer: "윤동주", owner: null },
-    { id: 3, name: "청록파 산기슭", type: "quiz", emoji: "⛰️", price: 120000,
-      question: "박목월, 박두진, 조지훈을 함께 부르는 시인 유파의 이름은?", answer: "청록파", owner: null },
-    { id: 4, name: "시인의 언덕", type: "quiz", emoji: "🕊️", price: 130000,
-      question: "윤동주의 유고 시집 제목은 무엇일까요?", answer: "하늘과 바람과 별과 시", owner: null },
-    { id: 5, name: "유배지", type: "prison", emoji: "🏝️" },
-    { id: 6, name: "진달래꽃 고개", type: "quiz", emoji: "🌸", price: 140000,
-      question: "'나 보기가 역겨워 가실 때에는...'으로 시작하는 김소월의 시 제목은?", answer: "진달래꽃", owner: null },
-    { id: 7, name: "봄봄 마름의 밭", type: "quiz", emoji: "🌱", price: 150000,
-      question: "김유정의 소설 '봄봄'에서 '나'를 데릴사위로 부려먹는 인물은 누구일까요?", answer: "장인(봉필)", owner: null },
-    { id: 8, name: "무진 갈대숲", type: "quiz", emoji: "🌫️", price: 160000,
-      question: "김승옥의 소설 '무진기행'에서 무진을 상징하는 자연물은 무엇일까요?", answer: "안개", owner: null },
-    { id: 9, name: "흥부네 박씨마을", type: "quiz", emoji: "🎋", price: 170000,
-      question: "'흥부전'에서 흥부가 제비의 다리를 고쳐주고 받은 것은?", answer: "박씨", owner: null },
-    { id: 10, name: "암행어사", type: "chance", emoji: "🔑" },
-    { id: 11, name: "춘향골 광한루", type: "quiz", emoji: "🏮", price: 180000,
-      question: "'춘향전'에서 이몽룡과 성춘향이 처음 만난 장소는 어디일까요?", answer: "광한루", owner: null },
-    { id: 12, name: "심청이 인당수", type: "quiz", emoji: "🌊", price: 190000,
-      question: "심청이 아버지의 눈을 뜨게 하려고 몸을 던진 바다의 이름은?", answer: "인당수", owner: null },
-    { id: 13, name: "허생의 매점", type: "quiz", emoji: "🍎", price: 200000,
-      question: "박지원의 '허생전'에서 허생이 사재기한 대표 물품은 무엇일까요?", answer: "과일(대추 등)", owner: null },
-    { id: 14, name: "용비어천가 언덕", type: "quiz", emoji: "📜", price: 210000,
-      question: "훈민정음으로 기록된 최초의 서사시로, 조선 왕조의 정당성을 노래한 작품은?", answer: "용비어천가", owner: null },
-    { id: 15, name: "축지법", type: "teleport", emoji: "🌀" },
-    { id: 16, name: "관동별곡 정자", type: "quiz", emoji: "⛩️", price: 220000,
-      question: "정철이 강원도 관찰사로 부임하며 지은 가사 작품은 무엇일까요?", answer: "관동별곡", owner: null },
-    { id: 17, name: "사미인곡 규방", type: "quiz", emoji: "🪞", price: 230000,
-      question: "정철이 임금을 그리워하는 여인의 마음에 빗대어 쓴 가사 작품은?", answer: "사미인곡", owner: null },
-    { id: 18, name: "훈민정음 반포마당", type: "quiz", emoji: "📖", price: 240000,
-      question: "훈민정음을 창제하고 반포한 조선의 왕은 누구일까요?", answer: "세종대왕", owner: null },
-    { id: 19, name: "환곡", type: "fund", emoji: "💰" },
+    { id: 0,  name: "집현전",              type: "start",   emoji: "🏯" },
+    { id: 1,  name: "윤동주 서시 언덕",     type: "land",    emoji: "🌌", group: "seojeong", side: "top",
+      price: 90000,  question: "윤동주의 시 '서시'에서 '죽는 날까지 하늘을 우러러' 다음에 이어지는 구절은?", answer: "한 점 부끄럼이 없기를" },
+    { id: 2,  name: "김소월 진달래꽃 고개", type: "land",    emoji: "🌸", group: "seojeong", side: "top",
+      price: 100000, question: "'나 보기가 역겨워 가실 때에는...'으로 시작하는 김소월의 시는?", answer: "진달래꽃" },
+    { id: 3,  name: "설악산 만해마을",      type: "tourist", emoji: "🏔️", side: "top",
+      price: 150000, question: "만해마을은 어느 독립운동가이자 시인을 기리는 곳일까요?", answer: "한용운" },
+    { id: 4,  name: "메밀꽃 필 무렵 봉평",  type: "land",    emoji: "🌾", group: "geundae", side: "top",
+      price: 110000, question: "이효석의 소설 '메밀꽃 필 무렵'의 배경이 되는 지역은?", answer: "봉평(평창)" },
+    { id: 5,  name: "무진기행 갈대숲",      type: "land",    emoji: "🌫️", group: "geundae", side: "top",
+      price: 120000, question: "김승옥의 '무진기행'에서 무진을 상징하는 자연물은?", answer: "안개" },
+    { id: 6,  name: "동백꽃 점순이네",      type: "land",    emoji: "🐔", group: "geundae", side: "top",
+      price: 130000, question: "김유정의 소설 '동백꽃'에서 나와 점순이 갈등의 소재가 된 동물은?", answer: "닭" },
+
+    { id: 7,  name: "무인도",              type: "exile",   emoji: "🏝️" },
+
+    { id: 8,  name: "별 헤는 밤 언덕",     type: "land",    emoji: "✨", group: "jeohang", side: "right",
+      price: 140000, question: "윤동주의 유고 시집 제목은?", answer: "하늘과 바람과 별과 시" },
+    { id: 9,  name: "광야의 이육사",       type: "land",    emoji: "🏜️", group: "jeohang", side: "right",
+      price: 150000, question: "'까마득한 날에 하늘이 처음 열리고'로 시작하는 이육사의 시는?", answer: "광야" },
+    { id: 10, name: "김유정역",            type: "tourist", emoji: "🚉", side: "right",
+      price: 190000, question: "실제 소설가 이름을 딴 대한민국 최초의 기차역은 어느 소설가를 기념할까요?", answer: "김유정" },
+    { id: 11, name: "춘향골 광한루",       type: "land",    emoji: "🏮", group: "gojeon", side: "right",
+      price: 160000, question: "'춘향전'에서 이몽룡과 성춘향이 처음 만난 장소는?", answer: "광한루" },
+    { id: 12, name: "심청이 인당수",       type: "land",    emoji: "🌊", group: "gojeon", side: "right",
+      price: 170000, question: "심청이 아버지 눈을 뜨게 하려고 몸을 던진 바다는?", answer: "인당수" },
+    { id: 13, name: "흥부네 박씨마을",     type: "land",    emoji: "🎋", group: "gojeon", side: "right",
+      price: 180000, question: "'흥부전'에서 흥부가 제비 다리를 고쳐주고 받은 것은?", answer: "박씨" },
+
+    { id: 14, name: "올림픽",              type: "olympic", emoji: "🎪" },
+
+    { id: 15, name: "정지용 향수 마을",    type: "land",    emoji: "🏡", group: "hyangto", side: "bottom",
+      price: 190000, question: "'넓은 벌 동쪽 끝으로 옛이야기 지줄대는...'으로 시작하는 정지용의 시는?", answer: "향수" },
+    { id: 16, name: "백석 사슴 언덕",      type: "land",    emoji: "🦌", group: "hyangto", side: "bottom",
+      price: 200000, question: "평안 방언과 향토적 정서로 유명한, 시집 제목이기도 한 백석의 대표작은?", answer: "사슴" },
+    { id: 17, name: "전주 한옥마을",       type: "tourist", emoji: "🏯", side: "bottom",
+      price: 230000, question: "전주는 조선을 세운 어느 인물 가문의 발상지로도 유명할까요?", answer: "태조 이성계(전주 이씨)" },
+    { id: 18, name: "토끼전 용궁마을",     type: "land",    emoji: "🐢", group: "pansori", side: "bottom",
+      price: 210000, question: "'토끼전'에서 토끼를 용궁으로 데려가는 동물은?", answer: "자라(별주부)" },
+    { id: 19, name: "옹고집전 마을",       type: "land",    emoji: "🧙", group: "pansori", side: "bottom",
+      price: 220000, question: "'옹고집전'에서 옹고집을 벌하기 위해 가짜 옹고집을 만든 방법은?", answer: "도술(스님의 도술/부적)" },
+    { id: 20, name: "변강쇠가 장터",       type: "land",    emoji: "🪵", group: "pansori", side: "bottom",
+      price: 230000, question: "판소리 열두 마당 중 장승 동티를 소재로 한 작품은?", answer: "변강쇠가" },
+
+    { id: 21, name: "세계여행",            type: "travel",  emoji: "🎡" },
+
+    { id: 22, name: "관동별곡 정자",       type: "land",    emoji: "⛩️", group: "supil", side: "left",
+      price: 240000, question: "정철이 강원도 관찰사로 부임하며 지은 가사 작품은?", answer: "관동별곡" },
+    { id: 23, name: "허생전 매점",         type: "land",    emoji: "🍎", group: "supil", side: "left",
+      price: 250000, question: "박지원의 '허생전'에서 허생이 사재기한 대표 물품은?", answer: "과일(대추 등)" },
+    { id: 24, name: "군산 근대문화거리",   type: "tourist", emoji: "🌁", side: "left",
+      price: 270000, question: "채만식의 소설 '탁류'의 배경이 되는 항구 도시는?", answer: "군산" },
+    { id: 25, name: "풀잎 언덕",           type: "land",    emoji: "🌿", group: "hyeondae", side: "left",
+      price: 260000, question: "'풀이 눕는다... 바람보다도 더 빨리 눕는다'로 시작하는 김수영의 시는?", answer: "풀" },
+    { id: 26, name: "님의 침묵 규방",      type: "land",    emoji: "🙏", group: "hyeondae", side: "left",
+      price: 270000, question: "'님의 침묵'을 쓴 승려이자 독립운동가 시인은?", answer: "한용운" },
+    { id: 27, name: "봄은 고양이로다",     type: "land",    emoji: "🐈", group: "hyeondae", side: "left",
+      price: 280000, question: "'봄은 고양이로다'라는 시로 봄의 감각을 고양이에 비유한 시인은?", answer: "이장희" },
   ];
 
-  // 암행어사(황금열쇠) 칸에서 등장할 랜덤 이벤트
-  const CHANCE_EVENTS = [
-    { text: "암행어사 출두! 모범 답안 발표로 상금을 받았어요.", amount: 30000 },
-    { text: "암행어사에게 걸려 벌금을 냈습니다.", amount: -20000 },
-    { text: "길에서 엽전 주머니를 주웠습니다!", amount: 15000 },
-    { text: "수라간 심부름 값을 치렀습니다...", amount: -15000 },
-    { text: "백성들의 칭찬으로 상금을 받았어요!", amount: 25000 },
-    { text: "암행어사의 매서운 눈초리에 벌금을 물었습니다.", amount: -10000 },
-  ];
+  boardData.forEach((sq) => {
+    if (sq.type === "land" || sq.type === "tourist") {
+      sq.owner = null;
+      sq.buildingTier = 0;
+      sq.investedBuildingCost = 0;
+    }
+  });
 
-  // 조별 파스텔 테마 (1조~6조)
+  // ============================================================
+  // 게임 상수
+  // ============================================================
   const TEAM_PALETTE = [
-    { color: "#FF9EAE", light: "#FFE1E6", emoji: "🐰" }, // 1조 파스텔레드
-    { color: "#7FB3FF", light: "#DCEBFF", emoji: "🐻" }, // 2조 파스텔블루
-    { color: "#5FCB9E", light: "#DFFBEF", emoji: "🐱" }, // 3조 파스텔민트
-    { color: "#F2C14E", light: "#FFF3D2", emoji: "🐥" }, // 4조 파스텔옐로우
-    { color: "#B79CFF", light: "#EBE0FF", emoji: "🐼" }, // 5조 파스텔퍼플
-    { color: "#FF9E7A", light: "#FFE3D6", emoji: "🦊" }, // 6조 파스텔코랄
+    { color: "#FF9EAE", light: "#FFE1E6", emoji: "🐰" },
+    { color: "#7FB3FF", light: "#DCEBFF", emoji: "🐻" },
+    { color: "#5FCB9E", light: "#DFFBEF", emoji: "🐱" },
+    { color: "#F2C14E", light: "#FFF3D2", emoji: "🐥" },
+    { color: "#B79CFF", light: "#EBE0FF", emoji: "🐼" },
+    { color: "#FF9E7A", light: "#FFE3D6", emoji: "🦊" },
   ];
 
-  const START_MONEY = 500000;
-  const TOLL_RATE = 0.2;   // 다른 조 땅에 도착했을 때 통행료 비율
-  const WRONG_RATE = 0.1;  // 오답 시 벌금 비율 (환곡으로 적립)
-  const CATCH_PENALTY = 50000; // 외래어 적발 벌금
+  const START_MONEY = 1500000;
+  const CATCH_PENALTY = 50000;
+  const TRAVEL_FEE = 30000;
+  const EXILE_ESCAPE_FEE = 50000;
+  const WRONG_PENALTY_RATE = 0.1;
+  const TOLL_RATE = { 0: 0.15, 1: 0.35, 2: 0.6, 3: 0.9, 4: 1.4 };
+  const BUILD_MULT = { 1: 0.5, 2: 0.8, 3: 1.2, 4: 1.8 };
+  const TIER_NAMES = { 0: "대지", 1: "별장", 2: "빌딩", 3: "호텔", 4: "랜드마크" };
+  const BUILD_ICON = { 0: "", 1: "🏠", 2: "🏢", 3: "🏨", 4: "🏛️" };
+  const DICE_FACES = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
-  // ---------------- 상태 ----------------
-  let teams = [];
-  let currentTeamIndex = 0;
-  let fund = 0;
-  let isMoving = false;
-  let gameStarted = false;
-  let teamCount = 6;
-
-  const CELLS = buildPerimeterCells(6);
-  function buildPerimeterCells(n) {
+  const CELLS = buildBoardCells();
+  function buildBoardCells() {
     const cells = [];
-    for (let col = 1; col <= n; col++) cells.push({ row: 1, col });
-    for (let row = 2; row <= n; row++) cells.push({ row, col: n });
-    for (let col = n - 1; col >= 1; col--) cells.push({ row: n, col });
-    for (let row = n - 1; row >= 2; row--) cells.push({ row, col: 1 });
+    for (let col = 1; col <= 8; col++) cells.push({ row: 1, col });
+    for (let row = 2; row <= 7; row++) cells.push({ row, col: 8 });
+    for (let col = 8; col >= 1; col--) cells.push({ row: 8, col });
+    for (let row = 7; row >= 2; row--) cells.push({ row, col: 1 });
     return cells;
   }
 
@@ -555,17 +418,45 @@
     return `rgba(${r},${g},${b},${alpha})`;
   }
 
-  // ---------------- DOM 참조 ----------------
+  // ============================================================
+  // 상태
+  // ============================================================
+  let teams = [];
+  let currentTeamIndex = 0;
+  let fund = 0;
+  let isMoving = false;
+  let gameStarted = false;
+  let gameEnded = false;
+  let teamCount = 6;
+  let maxTurns = 30;
+  let turnCount = 0;
+  let timeLimitSeconds = 30 * 60;
+  let timeLeftSeconds = timeLimitSeconds;
+  let timerInterval = null;
+  let festival = { landId: null, multiplier: 1 };
+  let lastRollWasDouble = false;
+  let toastTimer = null;
+
+  // ============================================================
+  // DOM 참조
+  // ============================================================
   const setupOverlay = document.getElementById("setup-overlay");
   const appEl = document.getElementById("app");
   const boardEl = document.getElementById("board");
-  const cardsEl = document.getElementById("team-cards");
+  const rosterEl = document.getElementById("team-roster");
   const turnIndicatorEl = document.getElementById("turn-indicator");
-  const diceDisplayEl = document.getElementById("dice-display");
+  const fundLineEl = document.getElementById("fund-line");
+  const olympicLineEl = document.getElementById("olympic-line");
+  const dice1El = document.getElementById("dice1");
+  const dice2El = document.getElementById("dice2");
+  const doubleBadgeEl = document.getElementById("double-badge");
   const rollBtn = document.getElementById("roll-btn");
-  const fundBadgeEl = document.getElementById("fund-badge");
+  const gaugeEl = document.getElementById("gauge");
+  const turnCounterEl = document.getElementById("turn-counter");
+  const timeDisplayEl = document.getElementById("time-display");
   const teacherFundDisplayEl = document.getElementById("teacher-fund-display");
   const teacherTeamSelectEl = document.getElementById("teacher-team-select");
+  const warningBannerEl = document.getElementById("warning-banner");
 
   const modalOverlay = document.getElementById("modal-overlay");
   const modalEmojiEl = document.getElementById("modal-emoji");
@@ -574,7 +465,9 @@
   const modalExtraEl = document.getElementById("modal-extra");
   const modalActionsEl = document.getElementById("modal-actions");
 
-  // ---------------- 시작 화면 ----------------
+  // ============================================================
+  // 시작 화면
+  // ============================================================
   document.querySelectorAll(".count-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".count-btn").forEach((b) => b.classList.remove("selected"));
@@ -585,38 +478,70 @@
   document.getElementById("start-game-btn").addEventListener("click", startGame);
 
   function startGame() {
+    teamCount = Number(document.querySelector(".count-btn.selected").dataset.count);
+    maxTurns = Number(document.getElementById("setup-maxturns").value) || 30;
+    timeLimitSeconds = (Number(document.getElementById("setup-timelimit").value) || 30) * 60;
+    timeLeftSeconds = timeLimitSeconds;
+
     teams = [];
     for (let i = 0; i < teamCount; i++) {
       const p = TEAM_PALETTE[i];
       teams.push({
-        id: i,
-        name: `${i + 1}조`,
-        color: p.color,
-        light: p.light,
-        emoji: p.emoji,
-        money: START_MONEY,
-        position: 0,
-        lands: [],
-        skipNext: false,
+        id: i, name: `${i + 1}조`, color: p.color, light: p.light, emoji: p.emoji,
+        money: START_MONEY, position: 0, lands: [], lapsCompleted: 0,
+        consecutiveDoubles: 0, exileTurnsLeft: 0,
       });
     }
     currentTeamIndex = 0;
     fund = 0;
+    turnCount = 0;
     gameStarted = true;
+    gameEnded = false;
+    festival = { landId: null, multiplier: 1 };
+
+    boardData.forEach((sq) => {
+      if (sq.type === "land" || sq.type === "tourist") {
+        sq.owner = null; sq.buildingTier = 0; sq.investedBuildingCost = 0;
+      }
+    });
 
     setupOverlay.classList.add("hidden");
     appEl.classList.remove("hidden");
 
     renderTeacherSelect();
     renderAll();
+    updateTurnCounterDisplay();
+    updateTimeDisplay();
+    startTimer();
   }
 
-  // ---------------- 렌더링 ----------------
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeftSeconds--;
+      updateTimeDisplay();
+      if (timeLeftSeconds <= 0) endGameByLimit("제한 시간이 종료되었습니다!");
+    }, 1000);
+  }
+  function updateTimeDisplay() {
+    const m = Math.max(0, Math.floor(timeLeftSeconds / 60));
+    const s = Math.max(0, timeLeftSeconds % 60);
+    timeDisplayEl.textContent = `⏱ ${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+  function updateTurnCounterDisplay() {
+    turnCounterEl.textContent = `턴 ${turnCount}/${maxTurns}`;
+  }
+</script>
+<script>
+  // ============================================================
+  // 렌더링
+  // ============================================================
   function renderAll() {
     renderBoard();
     renderTeamCards();
     updateTurnIndicator();
     updateFundDisplay();
+    updateFestivalDisplay();
   }
 
   function renderBoard() {
@@ -628,51 +553,54 @@
       el.style.gridRow = cell.row;
       el.style.gridColumn = cell.col;
 
-      if (sq.type === "quiz" && sq.owner !== null) {
-        const ownerTeam = teams[sq.owner];
-        el.style.background = ownerTeam.color;
-        el.classList.add("owned");
+      if ((sq.type === "land" || sq.type === "tourist")) {
+        if (sq.owner !== null) {
+          el.style.background = teams[sq.owner].color;
+          el.classList.add("owned");
+        } else if (sq.type === "tourist") {
+          el.style.background = "#F5E6C8";
+        } else {
+          el.style.background = COLOR_GROUPS[sq.group].color;
+        }
       }
 
       const tokensHere = teams.filter((t) => t.position === idx);
-      const priceLabel =
-        sq.type === "quiz"
-          ? sq.owner !== null
-            ? teams[sq.owner].emoji
-            : Math.round(sq.price / 10000) + "만"
-          : "";
+      const isProperty = sq.type === "land" || sq.type === "tourist";
+      const priceLabel = isProperty
+        ? (sq.owner !== null ? (BUILD_ICON[sq.buildingTier] || "") : Math.round(sq.price / 10000) + "만")
+        : "";
 
       el.innerHTML = `
-        <span class="sq-emoji">${sq.emoji}</span>
-        <span class="sq-name">${sq.name}</span>
+        ${sq.type === "tourist" ? `<span class="sq-star">⭐</span>` : ""}
+        ${sq.owner !== null && isProperty ? `<span class="sq-owner-badge">${teams[sq.owner].emoji}</span>` : ""}
+        <span class="sq-name">${sq.emoji || ""} ${sq.name}</span>
         ${priceLabel ? `<span class="sq-price">${priceLabel}</span>` : ""}
-        <div class="sq-tokens">${tokensHere.map((t) => `<span class="token" title="${t.name}">${t.emoji}</span>`).join("")}</div>
+        <div class="sq-tokens">${tokensHere.map((t) => `<span class="token">${t.emoji}</span>`).join("")}</div>
       `;
       boardEl.appendChild(el);
     });
   }
 
   function renderTeamCards() {
-    cardsEl.innerHTML = teams
-      .map(
-        (t) => `
-      <div class="team-card" style="--team-color:${t.color}; --team-light:${t.light}; box-shadow:0 10px 20px ${hexToRgba(t.color, 0.35)};">
+    rosterEl.innerHTML = teams.map((t) => `
+      <div class="team-card" style="--team-color:${t.color}; --team-light:${t.light}; box-shadow:0 8px 16px ${hexToRgba(t.color, 0.35)};">
         <div class="team-card-head">
           <span class="team-emoji">${t.emoji}</span>
           <span>${t.name}</span>
+          ${t.exileTurnsLeft > 0 ? `<span class="exile-badge">🏝️${t.exileTurnsLeft}</span>` : ""}
         </div>
-        <div class="team-money">${t.money.toLocaleString()}원</div>
+        <div class="team-money">${t.money.toLocaleString()}골드</div>
+        <div class="team-meta">바퀴 ${t.lapsCompleted || 0} · 땅 ${t.lands.length}개</div>
         <div class="team-lands">
-          ${
-            t.lands.length
-              ? t.lands.map((id) => `<span class="land-chip">${boardData[id].emoji} ${boardData[id].name}</span>`).join("")
-              : `<span class="land-chip empty">보유한 땅 없음</span>`
-          }
+          ${t.lands.length
+            ? t.lands.map((id) => {
+                const sq = boardData.find((s) => s.id === id);
+                return `<span class="land-chip">${BUILD_ICON[sq.buildingTier] || "▫️"} ${sq.name}</span>`;
+              }).join("")
+            : `<span class="land-chip empty">보유한 땅 없음</span>`}
         </div>
       </div>
-    `
-      )
-      .join("");
+    `).join("");
   }
 
   function updateTurnIndicator() {
@@ -683,48 +611,68 @@
   }
 
   function updateFundDisplay() {
-    fundBadgeEl.textContent = `💰 환곡: ${fund.toLocaleString()}원`;
-    teacherFundDisplayEl.textContent = `${fund.toLocaleString()}원`;
+    fundLineEl.textContent = `💰 환곡: ${fund.toLocaleString()}골드`;
+    teacherFundDisplayEl.textContent = `${fund.toLocaleString()}골드`;
+  }
+
+  function updateFestivalDisplay() {
+    if (festival.landId === null) {
+      olympicLineEl.textContent = "🎪 축제 없음";
+    } else {
+      const sq = boardData.find((s) => s.id === festival.landId);
+      olympicLineEl.textContent = `🎪 ${sq ? sq.name : ""} 통행료 ×${festival.multiplier}`;
+    }
   }
 
   function renderTeacherSelect() {
     teacherTeamSelectEl.innerHTML = teams.map((t) => `<option value="${t.id}">${t.emoji} ${t.name}</option>`).join("");
   }
 
-  // ---------------- 주사위 & 이동 ----------------
-  const DICE_FACES = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-
+  function showWarning(message) {
+    warningBannerEl.textContent = message;
+    warningBannerEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => warningBannerEl.classList.remove("show"), 4500);
+  }
+</script>
+<script>
+  // ============================================================
+  // 주사위 & 이동
+  // ============================================================
   rollBtn.addEventListener("click", rollDice);
 
   function rollDice() {
-    if (isMoving || !gameStarted) return;
+    if (isMoving || !gameStarted || gameEnded) return;
     const team = teams[currentTeamIndex];
-
-    if (team.skipNext) {
-      team.skipNext = false;
-      openModal({
-        emoji: "😴",
-        title: "유배 중...",
-        body: `${team.name}는 유배지에서 아직 돌아오지 못했어요. 이번 턴은 쉽니다.`,
-        buttons: [{ label: "다음 조로", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-      });
-      return;
-    }
+    if (team.exileTurnsLeft > 0) { openExileModal(team); return; }
 
     isMoving = true;
     rollBtn.disabled = true;
-    diceDisplayEl.classList.add("rolling");
+    doubleBadgeEl.classList.add("hidden");
+    rollBtn.classList.add("rolling");
 
     let flickers = 0;
     const flickerTimer = setInterval(() => {
-      diceDisplayEl.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
+      dice1El.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
+      dice2El.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
       flickers++;
       if (flickers > 8) {
         clearInterval(flickerTimer);
-        diceDisplayEl.classList.remove("rolling");
-        const value = Math.floor(Math.random() * 6) + 1;
-        diceDisplayEl.textContent = DICE_FACES[value];
-        moveToken(team, value);
+        rollBtn.classList.remove("rolling");
+        const d1 = Math.floor(Math.random() * 6) + 1;
+        const d2 = Math.floor(Math.random() * 6) + 1;
+        dice1El.textContent = DICE_FACES[d1];
+        dice2El.textContent = DICE_FACES[d2];
+
+        lastRollWasDouble = d1 === d2;
+        team.consecutiveDoubles = lastRollWasDouble ? (team.consecutiveDoubles || 0) + 1 : 0;
+
+        if (team.consecutiveDoubles >= 3) {
+          isMoving = false;
+          imprisonTeam(team, true);
+          return;
+        }
+        moveToken(team, d1 + d2);
       }
     }, 80);
   }
@@ -733,6 +681,7 @@
     let moved = 0;
     const moveTimer = setInterval(() => {
       team.position = (team.position + 1) % boardData.length;
+      if (team.position === 0) team.lapsCompleted = (team.lapsCompleted || 0) + 1;
       renderBoard();
       moved++;
       if (moved >= steps) {
@@ -740,227 +689,519 @@
         isMoving = false;
         handleLanding(team);
       }
-    }, 220);
+    }, 150);
   }
 
-  // ---------------- 칸 도착 처리 ----------------
-  function handleLanding(team) {
-    const sq = boardData[team.position];
-
-    switch (sq.type) {
-      case "start":
-        openModal({
-          emoji: sq.emoji,
-          title: sq.name,
-          body: `${team.name}, 출발점 집현전으로 돌아왔습니다!`,
-          buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-        });
-        break;
-
-      case "prison":
-        team.skipNext = true;
-        openModal({
-          emoji: sq.emoji,
-          title: sq.name,
-          body: `${team.name}, 유배지에 갇혔습니다! 다음 턴은 쉬어야 해요.`,
-          buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-        });
-        break;
-
-      case "chance":
-        handleChance(team);
-        break;
-
-      case "teleport":
-        openTeleportModal(team);
-        break;
-
-      case "fund": {
-        const amount = fund;
-        openModal({
-          emoji: sq.emoji,
-          title: sq.name,
-          body:
-            amount > 0
-              ? `${team.name}, 쌓여있던 환곡 ${amount.toLocaleString()}원을 모두 획득했습니다!`
-              : `아직 쌓인 환곡이 없어요. 다음 기회에!`,
-          buttons: [
-            {
-              label: "확인",
-              className: "btn-primary",
-              onClick: () => {
-                team.money += amount;
-                fund = 0;
-                updateFundDisplay();
-                renderTeamCards();
-                closeModal();
-                nextTurn();
-              },
-            },
-          ],
-        });
-        break;
-      }
-
-      case "quiz":
-        if (sq.owner === null) {
-          openQuizModal(team, sq);
-        } else if (sq.owner === team.id) {
-          openModal({
-            emoji: sq.emoji,
-            title: sq.name,
-            body: `${team.name}의 땅이에요! 통행료 없이 지나갑니다.`,
-            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-          });
-        } else {
-          const owner = teams[sq.owner];
-          const toll = Math.round(sq.price * TOLL_RATE);
-          team.money = Math.max(0, team.money - toll);
-          owner.money += toll;
-          renderTeamCards();
-          openModal({
-            emoji: sq.emoji,
-            title: sq.name,
-            body: `앗, ${owner.name}의 땅이에요! 통행료 ${toll.toLocaleString()}원을 ${owner.name}에게 지불했습니다.`,
-            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-          });
-        }
-        break;
+  function advanceTurn(extraRoll) {
+    if (gameEnded) return;
+    if (extraRoll) {
+      doubleBadgeEl.textContent = "🎲 더블! 한 번 더 굴리세요!";
+      doubleBadgeEl.classList.remove("hidden");
+      rollBtn.disabled = false;
+      return;
     }
-  }
-
-  function handleChance(team) {
-    const event = CHANCE_EVENTS[Math.floor(Math.random() * CHANCE_EVENTS.length)];
-    team.money = Math.max(0, team.money + event.amount);
-    const sign = event.amount >= 0 ? "+" : "";
-    renderTeamCards();
-    openModal({
-      emoji: "🔑",
-      title: "암행어사 (황금열쇠)",
-      body: `${event.text}<br><strong>${sign}${event.amount.toLocaleString()}원</strong>`,
-      buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-    });
-  }
-
-  function openTeleportModal(team) {
-    const options = boardData.filter((sq) => sq.id !== 15).map((sq) => `<option value="${sq.id}">${sq.name}</option>`).join("");
-    openModal({
-      emoji: "🌀",
-      title: "축지법",
-      body: `순간이동으로 가고 싶은 곳을 골라보세요!`,
-      customHTML: `<select id="teleport-select" class="teleport-select">${options}</select>`,
-      buttons: [
-        {
-          label: "이동하기",
-          className: "btn-primary",
-          onClick: () => {
-            const dest = Number(document.getElementById("teleport-select").value);
-            team.position = dest;
-            closeModal();
-            renderBoard();
-            handleLanding(team);
-          },
-        },
-      ],
-    });
-  }
-
-  function openQuizModal(team, sq) {
-    openModal({
-      emoji: sq.emoji,
-      title: sq.name,
-      body: `<strong>Q.</strong> ${sq.question}`,
-      buttons: [{ label: "정답 확인", className: "btn-primary", onClick: () => showQuizAnswerStage(team, sq) }],
-    });
-  }
-
-  function showQuizAnswerStage(team, sq) {
-    openModal({
-      emoji: sq.emoji,
-      title: sq.name,
-      body: `<strong>Q.</strong> ${sq.question}<br><br><span class="quiz-answer">정답: ${sq.answer}</span><br>실제로 맞혔나요?`,
-      buttons: [
-        { label: "✅ 정답이었어요", className: "btn-primary", onClick: () => showBuyStage(team, sq) },
-        { label: "❌ 오답이었어요", className: "btn-secondary", onClick: () => handleWrongAnswer(team, sq) },
-      ],
-    });
-  }
-
-  function showBuyStage(team, sq) {
-    const affordable = team.money >= sq.price;
-    const buttons = [];
-    if (affordable) {
-      buttons.push({
-        label: "구매하기 🎉",
-        className: "btn-primary",
-        onClick: () => {
-          team.money -= sq.price;
-          sq.owner = team.id;
-          team.lands.push(sq.id);
-          closeModal();
-          renderAll();
-          nextTurn();
-        },
-      });
-    }
-    buttons.push({
-      label: affordable ? "그냥 넘어가기" : "아쉽지만 넘어가기",
-      className: "btn-secondary",
-      onClick: () => { closeModal(); nextTurn(); },
-    });
-
-    openModal({
-      emoji: "🎉",
-      title: "정답입니다!",
-      body:
-        `이 땅 <strong>${sq.name}</strong>을(를) ${sq.price.toLocaleString()}원에 구매하시겠어요?` +
-        (affordable ? "" : `<br><span class="warn">보유 금액이 부족해서 구매할 수 없어요.</span>`),
-      buttons,
-    });
-  }
-
-  function handleWrongAnswer(team, sq) {
-    const toll = Math.round(sq.price * WRONG_RATE);
-    team.money = Math.max(0, team.money - toll);
-    fund += toll;
-    renderTeamCards();
-    updateFundDisplay();
-    openModal({
-      emoji: "😢",
-      title: "아쉬워요!",
-      body: `오답이었어요. 벌금 ${toll.toLocaleString()}원이 환곡에 쌓였습니다.`,
-      buttons: [{ label: "다음 턴으로", className: "btn-primary", onClick: () => { closeModal(); nextTurn(); } }],
-    });
-  }
-
-  function nextTurn() {
+    doubleBadgeEl.classList.add("hidden");
+    teams[currentTeamIndex].consecutiveDoubles = 0;
     currentTeamIndex = (currentTeamIndex + 1) % teams.length;
-    diceDisplayEl.textContent = "🎲";
+    turnCount++;
+    updateTurnCounterDisplay();
+    if (turnCount >= maxTurns) { endGameByLimit("제한 턴에 도달했습니다!"); return; }
+    dice1El.textContent = "⚀";
+    dice2El.textContent = "⚀";
     rollBtn.disabled = false;
     updateTurnIndicator();
     renderTeamCards();
   }
+</script>
+<script>
+  // ============================================================
+  // 칸 도착 처리
+  // ============================================================
+  function handleLanding(team) {
+    const sq = boardData[team.position];
+    switch (sq.type) {
+      case "start": onLandStart(team); break;
+      case "exile": imprisonTeam(team, false); break;
+      case "olympic": onLandOlympic(team); break;
+      case "travel": onLandTravel(team); break;
+      case "land": case "tourist": onLandProperty(team, sq); break;
+    }
+  }
 
-  // ---------------- 외래어 적발 ----------------
-  function catchForeignWord() {
-    if (!gameStarted || teams.length === 0) return;
-    const team = teams[currentTeamIndex];
-    team.money = Math.max(0, team.money - CATCH_PENALTY);
-    fund += CATCH_PENALTY;
-    renderTeamCards();
-    updateFundDisplay();
+  function onLandStart(team) {
     openModal({
-      emoji: "🚫",
-      title: "외래어 사용 적발!",
-      body: `${team.name}, 우리말 대신 외래어를 사용했네요! 벌금 ${CATCH_PENALTY.toLocaleString()}원이 환곡에 쌓였습니다.`,
+      emoji: "🏯", title: "집현전",
+      body: `${team.name}, 출발점 집현전으로 돌아왔습니다!`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+    });
+  }
+
+  function imprisonTeam(team, viaDoubles) {
+    team.position = 7;
+    team.exileTurnsLeft = 3;
+    team.consecutiveDoubles = 0;
+    renderBoard();
+    openModal({
+      emoji: "🏝️", title: "무인도",
+      body: viaDoubles
+        ? `${team.name}, 더블을 3번 연속 굴려서 무인도로 유배되었습니다!`
+        : `${team.name}, 무인도에 도착했습니다. 3턴 동안 갇히게 돼요!`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+    });
+  }
+
+  function onLandOlympic(team) {
+    const ownedCells = boardData.filter((s) => (s.type === "land" || s.type === "tourist") && s.owner !== null);
+    if (ownedCells.length === 0) {
+      openModal({
+        emoji: "🎪", title: "올림픽",
+        body: "아직 축제를 적용할 소유된 땅이 없어요. 다음 기회에!",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = ownedCells.map((s) => `<option value="${s.id}">${s.name} (${teams[s.owner].name})</option>`).join("");
+    openModal({
+      emoji: "🎪", title: "올림픽 개최!",
+      body: "축제를 적용할 땅과 배율을 선택하세요. 그 땅의 통행료가 배율만큼 오릅니다.",
+      customHTML: `<select id="olympic-select" class="teleport-select">${options}</select>
+        <div class="olympic-mult-row">
+          <button class="btn-secondary btn-small" data-m="2">×2</button>
+          <button class="btn-secondary btn-small" data-m="3">×3</button>
+          <button class="btn-secondary btn-small" data-m="4">×4</button>
+          <button class="btn-secondary btn-small" data-m="5">×5</button>
+        </div>`,
+      buttons: [{ label: "닫기", className: "btn-secondary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+    });
+    document.querySelectorAll(".olympic-mult-row button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const landId = Number(document.getElementById("olympic-select").value);
+        const mult = Number(btn.dataset.m);
+        festival = { landId, multiplier: mult };
+        updateFestivalDisplay();
+        closeModal();
+        advanceTurn(lastRollWasDouble);
+      });
+    });
+  }
+
+  function onLandTravel(team) {
+    if (team.money < TRAVEL_FEE) {
+      openModal({
+        emoji: "🎡", title: "세계여행",
+        body: `이동비 ${TRAVEL_FEE.toLocaleString()}골드가 부족해요. 이번 칸에 머무릅니다.`,
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = boardData.filter((s) => s.id !== 21).map((s) => `<option value="${s.id}">${s.name}</option>`).join("");
+    openModal({
+      emoji: "🎡", title: "세계여행",
+      body: `가마를 타고 이동비 ${TRAVEL_FEE.toLocaleString()}골드를 낸 뒤 원하는 곳으로 이동하세요!`,
+      customHTML: `<select id="travel-select" class="teleport-select">${options}</select>`,
+      buttons: [{
+        label: "이동하기", className: "btn-primary",
+        onClick: () => {
+          const dest = Number(document.getElementById("travel-select").value);
+          team.money -= TRAVEL_FEE;
+          team.position = dest;
+          renderTeamCards();
+          closeModal();
+          renderBoard();
+          handleLanding(team);
+        },
+      }],
+    });
+  }
+</script>
+<script>
+  // ============================================================
+  // 땅 도착 처리 (구매 / 건설 / 통행료 / 인수)
+  // ============================================================
+  function onLandProperty(team, sq) {
+    if (sq.owner === null) {
+      openPropertyQuizModal(team, sq, "buy");
+    } else if (sq.owner === team.id) {
+      const nextTier = getNextBuildableTier(team, sq);
+      if (nextTier === null) {
+        openModal({
+          emoji: sq.emoji || "🏠", title: sq.name,
+          body: `${team.name}의 땅이에요. 지금은 더 건설할 수 있는 단계가 없어요.`,
+          buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+        });
+      } else {
+        openPropertyQuizModal(team, sq, "build");
+      }
+    } else {
+      offerTollOrAcquire(team, sq);
+    }
+  }
+
+  function getNextBuildableTier(team, sq) {
+    const tier = sq.buildingTier || 0;
+    if (tier === 0) return 1;
+    if (tier === 1) return team.lapsCompleted >= 1 ? 2 : null;
+    if (tier === 2) return team.lapsCompleted >= 2 ? 3 : null;
+    if (tier === 3) {
+      if (sq.type !== "land") return null;
+      return isGroupAllAtTier(sq.group, team.id, 3) ? 4 : null;
+    }
+    return null;
+  }
+
+  function getBuildCost(sq, tier) {
+    return Math.round((sq.price * BUILD_MULT[tier]) / 1000) * 1000;
+  }
+
+  function openPropertyQuizModal(team, sq, mode) {
+    openModal({
+      emoji: sq.emoji || "🏠", title: sq.name,
+      body: `<strong>Q.</strong> ${sq.question}`,
+      buttons: [{ label: "정답 확인", className: "btn-primary", onClick: () => showPropertyAnswerStage(team, sq, mode) }],
+    });
+  }
+
+  function showPropertyAnswerStage(team, sq, mode) {
+    openModal({
+      emoji: sq.emoji || "🏠", title: sq.name,
+      body: `<strong>Q.</strong> ${sq.question}<br><br><span class="quiz-answer">정답: ${sq.answer}</span><br>실제로 맞혔나요?`,
+      buttons: [
+        { label: "✅ 정답이었어요", className: "btn-primary", onClick: () => (mode === "buy" ? showBuyDecision(team, sq) : showBuildDecision(team, sq)) },
+        { label: "❌ 오답이었어요", className: "btn-secondary", onClick: () => handlePropertyWrongAnswer(team, sq) },
+      ],
+    });
+  }
+
+  function handlePropertyWrongAnswer(team, sq) {
+    const penalty = Math.round(((sq.price || 100000) * WRONG_PENALTY_RATE) / 1000) * 1000;
+    team.money = Math.max(0, team.money - penalty);
+    fund += penalty;
+    renderTeamCards(); updateFundDisplay();
+    openModal({
+      emoji: "😢", title: "아쉬워요!",
+      body: `오답이었어요. 벌금 ${penalty.toLocaleString()}골드가 환곡에 쌓였습니다.`,
+      buttons: [{ label: "다음 턴으로", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+    });
+  }
+
+  function showBuyDecision(team, sq) {
+    const affordable = team.money >= sq.price;
+    const buttons = [];
+    if (affordable) {
+      buttons.push({
+        label: "구매하기 🎉", className: "btn-primary",
+        onClick: () => {
+          team.money -= sq.price;
+          sq.owner = team.id;
+          team.lands.push(sq.id);
+          renderAll();
+          closeModal();
+          checkMonopolyWin(team);
+          if (!gameEnded) advanceTurn(lastRollWasDouble);
+        },
+      });
+    }
+    buttons.push({ label: affordable ? "그냥 넘어가기" : "아쉽지만 넘어가기", className: "btn-secondary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } });
+    openModal({
+      emoji: "🎉", title: "정답입니다!",
+      body: `이 땅 <strong>${sq.name}</strong>을(를) ${sq.price.toLocaleString()}골드에 구매하시겠어요?` + (affordable ? "" : `<br><span class="warn">보유 골드가 부족해서 구매할 수 없어요.</span>`),
+      buttons,
+    });
+  }
+
+  function showBuildDecision(team, sq) {
+    const nextTier = getNextBuildableTier(team, sq);
+    if (nextTier === null) {
+      openModal({
+        emoji: "🏠", title: sq.name, body: "지금은 건설할 수 있는 단계가 없어요.",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const cost = getBuildCost(sq, nextTier);
+    const tierName = TIER_NAMES[nextTier];
+    const affordable = team.money >= cost;
+    const buttons = [];
+    if (affordable) {
+      buttons.push({
+        label: `${tierName} 건설하기 🏗️`, className: "btn-primary",
+        onClick: () => {
+          team.money -= cost;
+          sq.buildingTier = nextTier;
+          sq.investedBuildingCost = (sq.investedBuildingCost || 0) + cost;
+          renderAll();
+          closeModal();
+          advanceTurn(lastRollWasDouble);
+        },
+      });
+    }
+    buttons.push({ label: affordable ? "다음에 건설하기" : "아쉽지만 다음에", className: "btn-secondary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } });
+    openModal({
+      emoji: "🏗️", title: "정답입니다! 건설 기회!",
+      body: `<strong>${sq.name}</strong>에 <strong>${tierName}</strong>을(를) ${cost.toLocaleString()}골드에 건설하시겠어요?` + (affordable ? "" : `<br><span class="warn">보유 골드가 부족해요.</span>`),
+      buttons,
+    });
+  }
+
+  function offerTollOrAcquire(team, sq) {
+    const owner = teams[sq.owner];
+    const tier = sq.buildingTier || 0;
+    const groupFull = sq.type === "land" && isGroupFullyOwned(sq.group, sq.owner);
+    let toll = Math.round((sq.price * TOLL_RATE[tier]) / 1000) * 1000;
+    if (tier === 0 && groupFull) toll *= 2;
+    if (festival.landId === sq.id) toll = Math.round(toll * festival.multiplier);
+
+    const canAcquire = !(sq.type === "tourist" || tier === 4);
+    const acquireCost = Math.round((2 * (sq.price + (sq.investedBuildingCost || 0))) / 1000) * 1000;
+
+    const buttons = [{
+      label: `통행료 내기 (${toll.toLocaleString()}골드)`, className: "btn-primary",
+      onClick: () => {
+        team.money = Math.max(0, team.money - toll);
+        owner.money += toll;
+        renderTeamCards();
+        closeModal();
+        advanceTurn(lastRollWasDouble);
+      },
+    }];
+    if (canAcquire && team.money >= acquireCost) {
+      buttons.push({
+        label: `인수하기 (${acquireCost.toLocaleString()}골드)`, className: "btn-secondary",
+        onClick: () => {
+          team.money -= acquireCost;
+          owner.money += acquireCost;
+          owner.lands = owner.lands.filter((id) => id !== sq.id);
+          sq.owner = team.id;
+          team.lands.push(sq.id);
+          renderAll();
+          closeModal();
+          checkMonopolyWin(team);
+          if (!gameEnded) advanceTurn(lastRollWasDouble);
+        },
+      });
+    }
+    openModal({
+      emoji: sq.emoji || "🏠", title: sq.name,
+      body: `앗, ${owner.name}의 땅(${TIER_NAMES[tier]})이에요!` + (canAcquire ? "" : `<br><span class="warn">이 땅은 인수할 수 없어요.</span>`),
+      buttons,
+    });
+  }
+</script>
+<script>
+  // ============================================================
+  // 무인도 탈출
+  // ============================================================
+  function openExileModal(team) {
+    const buttons = [{ label: "🎲 더블 굴려서 탈출", className: "btn-primary", onClick: () => attemptExileDice(team) }];
+    if (team.money >= EXILE_ESCAPE_FEE) {
+      buttons.push({
+        label: `💰 ${EXILE_ESCAPE_FEE.toLocaleString()}골드 내고 탈출`, className: "btn-secondary",
+        onClick: () => {
+          team.money -= EXILE_ESCAPE_FEE;
+          fund += EXILE_ESCAPE_FEE;
+          team.exileTurnsLeft = 0;
+          renderTeamCards(); updateFundDisplay();
+          closeModal();
+          openModal({
+            emoji: "🎉", title: "탈출 성공!", body: `${team.name}, 무인도에서 탈출했습니다!`,
+            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+          });
+        },
+      });
+    }
+    buttons.push({ label: "📝 퀴즈 풀고 탈출", className: "btn-secondary", onClick: () => attemptExileQuiz(team) });
+
+    openModal({
+      emoji: "🏝️", title: `무인도 (남은 턴: ${team.exileTurnsLeft})`,
+      body: `${team.name}, 무인도에 갇혀있어요! 탈출 방법을 선택하세요.`,
+      buttons,
+    });
+  }
+
+  function attemptExileDice(team) {
+    closeModal();
+    isMoving = true;
+    let flickers = 0;
+    const flickerTimer = setInterval(() => {
+      dice1El.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
+      dice2El.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
+      flickers++;
+      if (flickers > 8) {
+        clearInterval(flickerTimer);
+        const d1 = Math.floor(Math.random() * 6) + 1;
+        const d2 = Math.floor(Math.random() * 6) + 1;
+        dice1El.textContent = DICE_FACES[d1];
+        dice2El.textContent = DICE_FACES[d2];
+        isMoving = false;
+        if (d1 === d2) {
+          team.exileTurnsLeft = 0;
+          openModal({
+            emoji: "🎉", title: "탈출 성공!", body: `더블(${d1},${d1})이 나와서 탈출했습니다!`,
+            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+          });
+        } else {
+          team.exileTurnsLeft = Math.max(0, team.exileTurnsLeft - 1);
+          const msg = team.exileTurnsLeft > 0 ? `실패했어요. 남은 턴: ${team.exileTurnsLeft}` : `실패했지만 3턴이 지나 자동으로 풀려났습니다!`;
+          openModal({
+            emoji: "😢", title: "탈출 실패", body: msg,
+            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+          });
+        }
+      }
+    }, 80);
+  }
+
+  function attemptExileQuiz(team) {
+    closeModal();
+    const pool = boardData.filter((s) => s.question);
+    const q = pool[Math.floor(Math.random() * pool.length)];
+    openModal({
+      emoji: "📝", title: "탈출 퀴즈",
+      body: `<strong>Q.</strong> ${q.question}`,
+      buttons: [{
+        label: "정답 확인", className: "btn-primary",
+        onClick: () => {
+          openModal({
+            emoji: "📝", title: "탈출 퀴즈",
+            body: `<strong>Q.</strong> ${q.question}<br><br><span class="quiz-answer">정답: ${q.answer}</span><br>실제로 맞혔나요?`,
+            buttons: [
+              {
+                label: "✅ 정답이었어요", className: "btn-primary",
+                onClick: () => {
+                  team.exileTurnsLeft = 0;
+                  closeModal();
+                  openModal({
+                    emoji: "🎉", title: "탈출 성공!", body: `${team.name}, 퀴즈를 맞히고 탈출했습니다!`,
+                    buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+                  });
+                },
+              },
+              {
+                label: "❌ 오답이었어요", className: "btn-secondary",
+                onClick: () => {
+                  team.exileTurnsLeft = Math.max(0, team.exileTurnsLeft - 1);
+                  const msg = team.exileTurnsLeft > 0 ? `오답이었어요. 남은 턴: ${team.exileTurnsLeft}` : `오답이었지만 3턴이 지나 자동으로 풀려났습니다!`;
+                  closeModal();
+                  openModal({
+                    emoji: "😢", title: "탈출 실패", body: msg,
+                    buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+                  });
+                },
+              },
+            ],
+          });
+        },
+      }],
+    });
+  }
+</script>
+<script>
+  // ============================================================
+  // 독점 승리 판정
+  // ============================================================
+  function getGroupKeys() { return Object.keys(COLOR_GROUPS); }
+
+  function isGroupFullyOwned(groupKey, teamId) {
+    const cells = boardData.filter((s) => s.group === groupKey);
+    return cells.length > 0 && cells.every((s) => s.owner === teamId);
+  }
+  function isLineFullyOwned(side, teamId) {
+    const cells = boardData.filter((s) => s.side === side);
+    return cells.length > 0 && cells.every((s) => s.owner === teamId);
+  }
+  function isGroupAllAtTier(groupKey, teamId, tier) {
+    const cells = boardData.filter((s) => s.group === groupKey);
+    return cells.length > 0 && cells.every((s) => s.owner === teamId && (s.buildingTier || 0) >= tier);
+  }
+  function missingCountForSet(cellIds, teamId) {
+    return cellIds.filter((id) => boardData.find((s) => s.id === id).owner !== teamId).length;
+  }
+
+  function checkMonopolyWin(team) {
+    if (gameEnded) return;
+    const groupKeys = getGroupKeys();
+    const sides = ["top", "right", "bottom", "left"];
+    const touristIds = boardData.filter((s) => s.type === "tourist").map((s) => s.id);
+
+    const completeGroups = groupKeys.filter((g) => isGroupFullyOwned(g, team.id));
+    const completeLines = sides.filter((s) => isLineFullyOwned(s, team.id));
+    const hasTourist = touristIds.length > 0 && touristIds.every((id) => boardData.find((s) => s.id === id).owner === team.id);
+    const hasTriple = completeGroups.length >= 3;
+    const hasLine = completeLines.length >= 1;
+
+    let result = null;
+    if (hasLine && hasTourist) result = { label: "믹스 독점 (라인×관광지)", mult: 9 };
+    else if (hasTriple && hasLine) result = { label: "믹스 독점 (트리플×라인)", mult: 7 };
+    else if (hasTourist) result = { label: "관광지 독점", mult: 5 };
+    else if (hasLine) result = { label: "라인 독점", mult: 3 };
+    else if (hasTriple) result = { label: "트리플 독점", mult: 2 };
+
+    if (result) {
+      triggerMonopolyWin(team, result);
+    } else {
+      checkNearMonopoly(team, groupKeys, sides, touristIds);
+    }
+  }
+
+  function checkNearMonopoly(team, groupKeys, sides, touristIds) {
+    for (const g of groupKeys) {
+      const ids = boardData.filter((s) => s.group === g).map((s) => s.id);
+      if (missingCountForSet(ids, team.id) === 1) {
+        showWarning(`⚠️ 독점 위기 경고! ${team.name}, ${COLOR_GROUPS[g].label} 독점까지 땅 1칸 남았어요!`);
+        return;
+      }
+    }
+    for (const side of sides) {
+      const ids = boardData.filter((s) => s.side === side).map((s) => s.id);
+      if (missingCountForSet(ids, team.id) === 1) {
+        showWarning(`⚠️ 독점 위기 경고! ${team.name}, ${SIDE_LABELS[side]} 라인 독점까지 땅 1칸 남았어요!`);
+        return;
+      }
+    }
+    if (touristIds.length > 0 && missingCountForSet(touristIds, team.id) === 1) {
+      showWarning(`⚠️ 독점 위기 경고! ${team.name}, 관광지 독점까지 땅 1칸 남았어요!`);
+    }
+  }
+
+  function triggerMonopolyWin(team, result) {
+    gameEnded = true;
+    clearInterval(timerInterval);
+    rollBtn.disabled = true;
+    openModal({
+      emoji: "🏆", title: "⚡ 독점 승리! ⚡",
+      body: `${team.emoji} ${team.name}, <strong>${result.label}</strong>을(를) 달성했습니다!<br>보상 배율: <strong>${result.mult}배</strong><br><br>게임이 종료되었습니다! 🎉`,
       buttons: [{ label: "확인", className: "btn-primary", onClick: closeModal }],
     });
   }
 
-  document.getElementById("catch-btn-main").addEventListener("click", catchForeignWord);
-  document.getElementById("teacher-catch").addEventListener("click", catchForeignWord);
+  function computeTotalAssets(team) {
+    let total = team.money;
+    team.lands.forEach((id) => {
+      const sq = boardData.find((s) => s.id === id);
+      total += sq.price + (sq.investedBuildingCost || 0);
+    });
+    return total;
+  }
 
-  // ---------------- 선생님 제어판 ----------------
+  function endGameByLimit(reason) {
+    if (gameEnded) return;
+    gameEnded = true;
+    clearInterval(timerInterval);
+    rollBtn.disabled = true;
+    const ranked = teams.map((t) => ({ t, totalAssets: computeTotalAssets(t) })).sort((a, b) => b.totalAssets - a.totalAssets);
+    const winner = ranked[0].t;
+    const listHtml = ranked.map((r, i) => `${i + 1}위 ${r.t.emoji} ${r.t.name}: ${r.totalAssets.toLocaleString()}골드`).join("<br>");
+    openModal({
+      emoji: "🏆", title: "게임 종료!",
+      body: `${reason}<br><br>${listHtml}<br><br><strong>${winner.emoji} ${winner.name} 우승!</strong>`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: closeModal }],
+    });
+  }
+</script>
+<script>
+  // ============================================================
+  // 선생님 제어판
+  // ============================================================
   const teacherBtn = document.getElementById("teacher-btn");
   const teacherPanel = document.getElementById("teacher-panel");
   const teacherClose = document.getElementById("teacher-close");
@@ -970,6 +1211,7 @@
   teacherClose.addEventListener("click", () => teacherPanel.classList.add("hidden"));
 
   document.getElementById("teacher-pay").addEventListener("click", () => {
+    if (!gameStarted) return;
     const idx = Number(teacherTeamSelectEl.value);
     const amount = Number(teacherAmountInput.value) || 0;
     teams[idx].money += amount;
@@ -977,13 +1219,29 @@
   });
 
   document.getElementById("teacher-deduct").addEventListener("click", () => {
+    if (!gameStarted) return;
     const idx = Number(teacherTeamSelectEl.value);
     const amount = Number(teacherAmountInput.value) || 0;
     teams[idx].money = Math.max(0, teams[idx].money - amount);
     renderTeamCards();
   });
 
-  // ---------------- 공용 모달 ----------------
+  document.getElementById("teacher-catch").addEventListener("click", () => {
+    if (!gameStarted || gameEnded || teams.length === 0) return;
+    const team = teams[currentTeamIndex];
+    team.money = Math.max(0, team.money - CATCH_PENALTY);
+    fund += CATCH_PENALTY;
+    renderTeamCards(); updateFundDisplay();
+    openModal({
+      emoji: "🚨", title: "외래어 사용 적발!",
+      body: `${team.name}, 우리말 대신 외래어를 사용했네요! 벌금 ${CATCH_PENALTY.toLocaleString()}골드가 환곡에 쌓였습니다.`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: closeModal }],
+    });
+  });
+
+  // ============================================================
+  // 공용 모달
+  // ============================================================
   function openModal({ emoji = "", title = "", body = "", customHTML = "", buttons = [] }) {
     modalEmojiEl.textContent = emoji;
     modalTitleEl.textContent = title;
@@ -999,10 +1257,7 @@
     });
     modalOverlay.classList.remove("hidden");
   }
-
-  function closeModal() {
-    modalOverlay.classList.add("hidden");
-  }
+  function closeModal() { modalOverlay.classList.add("hidden"); }
 </script>
 </body>
 </html>

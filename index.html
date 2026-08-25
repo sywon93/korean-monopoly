@@ -104,6 +104,16 @@
   .square.type-exile { background: #D7D0F0; }
   .square.type-olympic { background: #FFD97A; }
   .square.type-travel { background: #BEE3FF; }
+  .square.type-fortune {
+    background: linear-gradient(135deg, #FFF3C4, #FFD34D, #FFE9A8, #FFC94D);
+    background-size: 260% 260%;
+    animation: fortuneShimmer 3.2s ease-in-out infinite;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.85), 0 0 10px rgba(255,197,60,0.7);
+  }
+  @keyframes fortuneShimmer {
+    0%, 100% { background-position: 0% 40%; }
+    50% { background-position: 100% 60%; }
+  }
   .square.owned { box-shadow: inset 0 0 0 3px white, 0 4px 8px rgba(0,0,0,0.2); padding-top: 20%; }
   .sq-owner-stripe {
     position: absolute; top: 0; left: 0; right: 0; height: 20%; z-index: 1;
@@ -117,7 +127,6 @@
     text-shadow: 0 1px 1px rgba(0,0,0,0.3); box-shadow: 0 2px 5px rgba(0,0,0,0.25);
   }
   .sq-building { font-size: clamp(1.15rem, 3vmin, 2rem); filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25)); }
-  .sq-star { position: absolute; top: 1px; left: 2px; font-size: clamp(0.8rem, 1.9vmin, 1.25rem); z-index: 2; }
   .sq-tokens { display: flex; gap: 1px; flex-wrap: wrap; justify-content: center; }
   .token { font-size: clamp(1rem, 2.6vmin, 1.7rem); }
 
@@ -155,6 +164,8 @@
   .exile-badge { margin-left: auto; background: #D7D0F0; border-radius: 999px; padding: 0.1rem 0.35rem; font-size: 0.6rem; }
   .team-money { font-weight: 800; font-size: clamp(0.68rem, 1.15vw, 0.88rem); color: var(--board-text); }
   .team-meta { font-size: clamp(0.55rem, 0.9vw, 0.66rem); color: var(--text-soft); }
+  .team-cards-held { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 0.2rem; }
+  .held-card { font-size: clamp(0.7rem, 1.2vw, 0.95rem); background: rgba(255,255,255,0.65); border-radius: 6px; padding: 0 3px; }
 
   /* ---------- 모달 ---------- */
   .modal-overlay { position: fixed; inset: 0; background: rgba(90,70,50,0.35); display: flex; align-items: center; justify-content: center; z-index: 300; padding: 1rem; }
@@ -168,6 +179,24 @@
   .teleport-select { padding: 0.55rem 0.9rem; border-radius: 14px; border: 2px solid #E9DFCE; width: 100%; margin-bottom: 0.6rem; }
   .olympic-mult-row { display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; }
   .modal-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- 황금카드 모달 테마 ---------- */
+  .modal-card.theme-fortune {
+    background: linear-gradient(160deg, #FFF6DC 0%, #FFE9A8 55%, #FFD34D 100%);
+    box-shadow: 0 20px 44px rgba(200,150,20,0.4), inset 0 0 0 4px #FFC94D;
+    position: relative; overflow: hidden;
+  }
+  .modal-card.theme-fortune::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+    background-size: 250% 250%; animation: fortuneSweep 2.4s ease-in-out infinite;
+  }
+  @keyframes fortuneSweep { 0% { background-position: 200% 0; } 100% { background-position: -50% 0; } }
+  .modal-card.theme-fortune .modal-emoji { font-size: 3rem; }
+  .card-cat-tag { display: inline-block; padding: 0.2rem 0.9rem; border-radius: 999px; font-weight: 800; font-size: 0.85rem; margin-bottom: 0.7rem; }
+  .card-cat-tag.cat-command { background: #A0C4FF; color: #1a3d7a; }
+  .card-cat-tag.cat-attack { background: #FF9E8F; color: #7a2416; }
+  .card-cat-tag.cat-defense { background: #CAFFBF; color: #1e5c2f; }
 
   /* ---------- 선생님 제어판 ---------- */
   .side-panel { position: fixed; top: 0; right: 0; height: 100vh; width: min(340px, 92vw); background: var(--card-bg); box-shadow: -10px 0 30px rgba(90,70,50,0.2); z-index: 250; padding: 1.4rem; overflow-y: auto; }
@@ -380,14 +409,6 @@
             <div class="rule-text"><span class="rule-title">라인 독점<span class="rule-reward">보상 3배</span></span>보드판 4개 라인(상/우/하/좌) 중 <strong>1개 라인의 모든 땅</strong>을 소유하면 즉시 승리!</div>
           </div>
           <div class="rule-block">
-            <span class="rule-icon">🏝️</span>
-            <div class="rule-text"><span class="rule-title">관광지 독점<span class="rule-reward">보상 5배</span></span><strong>특별 관광지 땅을 모두</strong> 소유하면 즉시 승리!</div>
-          </div>
-          <div class="rule-block">
-            <span class="rule-icon">✨</span>
-            <div class="rule-text"><span class="rule-title">믹스 독점<span class="rule-reward">보상 7~9배</span></span>위 조건을 동시에 두 가지 이상 달성하면 보상이 더욱 커져요!</div>
-          </div>
-          <div class="rule-block">
             <span class="rule-icon">⚠️</span>
             <div class="rule-text"><span class="rule-title">독점 위기 경고</span>독점 조건까지 땅이 <strong>1칸</strong> 남으면 화면 상단에 경고 배너가 떠요!</div>
           </div>
@@ -407,7 +428,7 @@
           </div>
           <div class="rule-block">
             <span class="rule-icon">🛡️</span>
-            <div class="rule-text"><span class="rule-title">인수 불가 지역</span>👑 <strong>랜드마크</strong>가 세워진 땅과 ⭐ <strong>관광지</strong>는 절대로 인수할 수 없어요!</div>
+            <div class="rule-text"><span class="rule-title">인수 불가 지역</span>👑 <strong>랜드마크</strong>가 세워진 땅은 절대로 인수하거나 파괴할 수 없어요!</div>
           </div>
         </div>
         <div class="rules-panel" data-panel="special">
@@ -419,6 +440,10 @@
             <span class="rule-icon">💰</span>
             <div class="rule-text"><span class="rule-title">환곡(기부금)</span>적발된 벌금은 중앙 '환곡'에 쌓이고, <strong>환곡 칸</strong>에 도착한 조가 통째로 획득할 수 있어요.</div>
           </div>
+          <div class="rule-block">
+            <span class="rule-icon">🃏</span>
+            <div class="rule-text"><span class="rule-title">황금카드</span>보드판 4개 라인에 하나씩 있는 <strong>황금카드 칸</strong>에 도착하면 명령·공격·방어 카드 중 한 장을 뽑아요. 방어 카드는 바로 쓰지 않고 보유했다가 필요할 때 사용할 수 있어요.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -429,7 +454,7 @@
 
   <!-- ============ 공용 모달 ============ -->
   <div class="modal-overlay hidden" id="modal-overlay">
-    <div class="modal-card">
+    <div class="modal-card" id="modal-card">
       <div class="modal-emoji" id="modal-emoji"></div>
       <h3 id="modal-title"></h3>
       <div class="modal-body" id="modal-body"></div>
@@ -468,9 +493,7 @@
     { id: 2,  name: "김소월 진달래꽃 고개", type: "land",    emoji: "🌸", group: "seojeong", side: "top",
       price: 100000, question: "'나 보기가 역겨워 가실 때에는...'으로 시작하는 김소월의 시는?", answer: "진달래꽃",
       explanation: "이별의 슬픔을 반어적 표현('죽어도 아니 눈물 흘리우리다')으로 승화한 김소월의 대표작입니다." },
-    { id: 3,  name: "설악산 만해마을",      type: "tourist", emoji: "🏔️", side: "top",
-      price: 150000, question: "만해마을은 어느 독립운동가이자 시인을 기리는 곳일까요?", answer: "한용운",
-      explanation: "강원도 인제군에 있는 만해마을은 '님의 침묵'을 쓴 만해 한용운을 기념하는 문학 공간입니다." },
+    { id: 3,  name: "황금카드",            type: "fortune", emoji: "🃏" },
     { id: 4,  name: "메밀꽃 필 무렵 봉평",  type: "land",    emoji: "🌾", group: "geundae", side: "top",
       price: 110000, question: "이효석의 소설 '메밀꽃 필 무렵'의 배경이 되는 지역은?", answer: "봉평(평창)",
       explanation: "장돌뱅이 허 생원의 이야기로, 달빛 아래 메밀꽃밭 묘사가 서정적인 것으로 유명합니다." },
@@ -489,9 +512,7 @@
     { id: 9,  name: "광야의 이육사",       type: "land",    emoji: "🏜️", group: "jeohang", side: "right",
       price: 150000, question: "'까마득한 날에 하늘이 처음 열리고'로 시작하는 이육사의 시는?", answer: "광야",
       explanation: "일제강점기 저항시의 대표작으로, '초인'을 통한 광복의 염원을 노래합니다." },
-    { id: 10, name: "김유정역",            type: "tourist", emoji: "🚉", side: "right",
-      price: 190000, question: "실제 소설가 이름을 딴 대한민국 최초의 기차역은 어느 소설가를 기념할까요?", answer: "김유정",
-      explanation: "경춘선 김유정역은 실존 인물의 이름을 딴 국내 최초의 기차역입니다." },
+    { id: 10, name: "황금카드",            type: "fortune", emoji: "🃏" },
     { id: 11, name: "춘향골 광한루",       type: "land",    emoji: "🏮", group: "gojeon", side: "right",
       price: 160000, question: "'춘향전'에서 이몽룡과 성춘향이 처음 만난 장소는?", answer: "광한루",
       explanation: "전북 남원에 실재하는 누각으로, 춘향전의 배경으로 널리 알려져 있습니다." },
@@ -510,9 +531,7 @@
     { id: 16, name: "백석 사슴 언덕",      type: "land",    emoji: "🦌", group: "hyangto", side: "bottom",
       price: 200000, question: "평안 방언과 향토적 정서로 유명한, 시집 제목이기도 한 백석의 대표작은?", answer: "사슴",
       explanation: "1936년 발간된 백석의 첫 시집으로, 평안도 방언과 토속적 소재가 특징입니다." },
-    { id: 17, name: "전주 한옥마을",       type: "tourist", emoji: "🏯", side: "bottom",
-      price: 230000, question: "전주는 조선을 세운 어느 인물 가문의 발상지로도 유명할까요?", answer: "태조 이성계(전주 이씨)",
-      explanation: "전주는 조선 왕실 전주 이씨의 본향으로, 한옥마을과 경기전 등이 유명합니다." },
+    { id: 17, name: "황금카드",            type: "fortune", emoji: "🃏" },
     { id: 18, name: "토끼전 용궁마을",     type: "land",    emoji: "🐢", group: "pansori", side: "bottom",
       price: 210000, question: "'토끼전'에서 토끼를 용궁으로 데려가는 동물은?", answer: "자라(별주부)",
       explanation: "'수궁가'라고도 불리며, 토끼의 재치로 위기를 벗어나는 이야기가 핵심입니다." },
@@ -531,9 +550,7 @@
     { id: 23, name: "허생전 매점",         type: "land",    emoji: "🍎", group: "supil", side: "left",
       price: 250000, question: "박지원의 '허생전'에서 허생이 사재기한 대표 물품은?", answer: "과일(대추 등)",
       explanation: "매점매석을 통해 당시 조선 경제 구조의 취약함을 풍자한 작품입니다." },
-    { id: 24, name: "군산 근대문화거리",   type: "tourist", emoji: "🌁", side: "left",
-      price: 270000, question: "채만식의 소설 '탁류'의 배경이 되는 항구 도시는?", answer: "군산",
-      explanation: "일제강점기 수탈의 거점이었던 군산은 근대문화유산 거리로 잘 보존되어 있습니다." },
+    { id: 24, name: "황금카드",            type: "fortune", emoji: "🃏" },
     { id: 25, name: "풀잎 언덕",           type: "land",    emoji: "🌿", group: "hyeondae", side: "left",
       price: 260000, question: "'풀이 눕는다... 바람보다도 더 빨리 눕는다'로 시작하는 김수영의 시는?", answer: "풀",
       explanation: "민중의 끈질긴 생명력을 '풀'의 이미지로 형상화한 김수영의 대표작입니다." },
@@ -546,13 +563,50 @@
   ];
 
   boardData.forEach((sq) => {
-    if (sq.type === "land" || sq.type === "tourist") {
+    if (sq.type === "land") {
       sq.owner = null;
       sq.buildingTier = 0;
       sq.investedBuildingCost = 0;
       sq.explanation = sq.explanation || "";
     }
   });
+
+  // ============================================================
+  // 황금카드 데이터 (선생님이 수정하는 곳 3/3)
+  // category: "명령" | "공격" | "방어"
+  // 이름/설명(description)만 바꾸는 것은 자유롭지만, id는 게임 로직과
+  // 연결되어 있으니 유지해주세요. 카드를 새로 추가하고 싶다면
+  // resolveFortuneCard() 함수에 해당 id 분기를 함께 추가해야 해요.
+  // ============================================================
+  const fortuneCardData = [
+    { id: "olympic", category: "명령", name: "올림픽/축제 개최", emoji: "🏛️",
+      description: "내 땅 중 한 곳을 지정해 통행료를 2배로 만들어요." },
+    { id: "worldtrip", category: "명령", name: "세계여행 초대장", emoji: "✈️",
+      description: "즉시 세계여행(가마) 칸으로 이동해요." },
+    { id: "goStart", category: "명령", name: "집현전으로 GO", emoji: "🚩",
+      description: "출발점 집현전으로 이동하며 월급을 받아요." },
+    { id: "exile", category: "명령", name: "유배지 유배", emoji: "🏝️",
+      description: "무인도로 강제 이동해요. (월급 없음)" },
+    { id: "donation", category: "명령", name: "불우이웃성금", emoji: "💸",
+      description: "모든 조가 현재 꼴찌 조에게 3만 골드씩 지급해요." },
+    { id: "cityChange", category: "공격", name: "도시 체인지", emoji: "🔄",
+      description: "내 땅 하나와 다른 조의 땅 하나를 맞바꿔요. (랜드마크 제외)" },
+    { id: "forceSell", category: "공격", name: "강제 매각", emoji: "🔨",
+      description: "다른 조의 땅 1곳을 반값에 강제로 팔아 빈 땅으로 만들어요." },
+    { id: "forceAcquire", category: "공격", name: "강제 인수", emoji: "🚩",
+      description: "다른 조의 땅 1곳을 인수비 없이 통행료만 내고 빼앗아와요." },
+    { id: "earthquake", category: "공격", name: "재앙/지진", emoji: "⚡",
+      description: "지정한 다른 조 땅의 건물을 1단계 파괴해요." },
+    { id: "angel", category: "방어", name: "천사 카드", emoji: "👼",
+      description: "통행료 100% 면제 또는 상대의 공격 카드 차단 (1회용)" },
+    { id: "discount", category: "방어", name: "할인 쿠폰", emoji: "🏷️",
+      description: "통행료 50% 할인 (1회용)" },
+    { id: "exileFree", category: "방어", name: "유배지 탈출권", emoji: "🔓",
+      description: "무인도에 갇혔을 때 즉시 무료로 탈출해요." },
+  ];
+  const CARD_CATEGORY_CLASS = { "명령": "command", "공격": "attack", "방어": "defense" };
+  const SALARY_AMOUNT = 100000;
+  const DONATION_AMOUNT = 30000;
 
   // ============================================================
   // 게임 상수
@@ -636,6 +690,7 @@
   const warningBannerEl = document.getElementById("warning-banner");
 
   const modalOverlay = document.getElementById("modal-overlay");
+  const modalCardEl = document.getElementById("modal-card");
   const modalEmojiEl = document.getElementById("modal-emoji");
   const modalTitleEl = document.getElementById("modal-title");
   const modalBodyEl = document.getElementById("modal-body");
@@ -666,7 +721,7 @@
       teams.push({
         id: i, name: `${i + 1}조`, color: p.color, light: p.light, deep: p.deep, emoji: p.emoji,
         money: START_MONEY, position: 0, lands: [], lapsCompleted: 0,
-        consecutiveDoubles: 0, exileTurnsLeft: 0,
+        consecutiveDoubles: 0, exileTurnsLeft: 0, cards: [],
       });
     }
     currentTeamIndex = 0;
@@ -677,7 +732,7 @@
     festival = { landId: null, multiplier: 1 };
 
     boardData.forEach((sq) => {
-      if (sq.type === "land" || sq.type === "tourist") {
+      if (sq.type === "land") {
         sq.owner = null; sq.buildingTier = 0; sq.investedBuildingCost = 0; sq.explanation = sq.explanation || "";
       }
     });
@@ -730,25 +785,22 @@
       el.style.gridRow = cell.row;
       el.style.gridColumn = cell.col;
 
-      if ((sq.type === "land" || sq.type === "tourist")) {
+      if (sq.type === "land") {
         if (sq.owner !== null) {
           el.style.background = teams[sq.owner].color;
           el.classList.add("owned");
-        } else if (sq.type === "tourist") {
-          el.style.background = "#F5E6C8";
         } else {
           el.style.background = COLOR_GROUPS[sq.group].color;
         }
       }
 
       const tokensHere = teams.filter((t) => t.position === idx);
-      const isProperty = sq.type === "land" || sq.type === "tourist";
+      const isProperty = sq.type === "land";
       const owned = isProperty && sq.owner !== null;
       const ownerTeam = owned ? teams[sq.owner] : null;
 
       el.innerHTML = `
         ${owned ? `<div class="sq-owner-stripe" style="background:${ownerTeam.deep}"></div>` : ""}
-        ${sq.type === "tourist" ? `<span class="sq-star">⭐</span>` : ""}
         <span class="sq-name">${sq.emoji || ""} ${sq.name}</span>
         ${owned
           ? `<span class="sq-owner-flag" style="background:${ownerTeam.deep}">${ownerTeam.emoji} ${ownerTeam.name}</span>`
@@ -770,6 +822,12 @@
         </div>
         <div class="team-money">${t.money.toLocaleString()}골드</div>
         <div class="team-meta">보유 땅 ${t.lands.length}개</div>
+        ${t.cards && t.cards.length
+          ? `<div class="team-cards-held">${t.cards.map((cid) => {
+              const c = fortuneCardData.find((fc) => fc.id === cid);
+              return `<span class="held-card" title="${c ? c.name : cid}">${c ? c.emoji : "🃏"}</span>`;
+            }).join("")}</div>`
+          : ""}
       </div>
     `).join("");
   }
@@ -895,7 +953,8 @@
       case "exile": imprisonTeam(team, false); break;
       case "olympic": onLandOlympic(team); break;
       case "travel": onLandTravel(team); break;
-      case "land": case "tourist": onLandProperty(team, sq); break;
+      case "fortune": onLandFortune(team); break;
+      case "land": onLandProperty(team, sq); break;
     }
   }
 
@@ -922,7 +981,7 @@
   }
 
   function onLandOlympic(team) {
-    const ownedCells = boardData.filter((s) => (s.type === "land" || s.type === "tourist") && s.owner !== null);
+    const ownedCells = boardData.filter((s) => s.type === "land" && s.owner !== null);
     if (ownedCells.length === 0) {
       openModal({
         emoji: "🎪", title: "올림픽",
@@ -1119,12 +1178,12 @@
   function offerTollOrAcquire(team, sq) {
     const owner = teams[sq.owner];
     const tier = sq.buildingTier || 0;
-    const groupFull = sq.type === "land" && isGroupFullyOwned(sq.group, sq.owner);
+    const groupFull = isGroupFullyOwned(sq.group, sq.owner);
     let toll = Math.round((sq.price * TOLL_RATE[tier]) / 1000) * 1000;
     if (tier === 0 && groupFull) toll *= 2;
     if (festival.landId === sq.id) toll = Math.round(toll * festival.multiplier);
 
-    const canAcquire = !(sq.type === "tourist" || tier === 4);
+    const canAcquire = tier !== 4;
     const acquireCost = Math.round((2 * (sq.price + (sq.investedBuildingCost || 0))) / 1000) * 1000;
 
     const buttons = [{
@@ -1137,6 +1196,30 @@
         advanceTurn(lastRollWasDouble);
       },
     }];
+    if (hasCard(team, "angel")) {
+      buttons.push({
+        label: "👼 천사 카드 사용 (통행료 면제)", className: "btn-secondary",
+        onClick: () => {
+          consumeCard(team, "angel");
+          renderTeamCards();
+          closeModal();
+          advanceTurn(lastRollWasDouble);
+        },
+      });
+    } else if (hasCard(team, "discount")) {
+      const discounted = Math.round((toll / 2) / 1000) * 1000;
+      buttons.push({
+        label: `🏷️ 할인 쿠폰 사용 (${discounted.toLocaleString()}골드)`, className: "btn-secondary",
+        onClick: () => {
+          consumeCard(team, "discount");
+          team.money = Math.max(0, team.money - discounted);
+          owner.money += discounted;
+          renderTeamCards();
+          closeModal();
+          advanceTurn(lastRollWasDouble);
+        },
+      });
+    }
     if (canAcquire && team.money >= acquireCost) {
       buttons.push({
         label: `인수하기 (${acquireCost.toLocaleString()}골드)`, className: "btn-secondary",
@@ -1162,10 +1245,342 @@
 </script>
 <script>
   // ============================================================
+  // 황금카드
+  // ============================================================
+  function hasCard(team, cardId) {
+    return !!(team.cards && team.cards.includes(cardId));
+  }
+  function consumeCard(team, cardId) {
+    const idx = team.cards.indexOf(cardId);
+    if (idx !== -1) team.cards.splice(idx, 1);
+  }
+  function addCardToInventory(team, card) {
+    team.cards.push(card.id);
+    renderTeamCards();
+    closeModal();
+    openModal({
+      emoji: card.emoji, title: "카드 보관!",
+      body: `${team.name}이(가) <strong>${card.name}</strong>을(를) 보관했어요. 우측 현황판에서 확인할 수 있어요.`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+    });
+  }
+
+  function ownableLandsOf(teamId, { excludeLandmark = true } = {}) {
+    return boardData.filter((s) => s.type === "land" && s.owner === teamId && !(excludeLandmark && s.buildingTier === 4));
+  }
+  function ownableLandsOfOthers(teamId, { excludeLandmark = true } = {}) {
+    return boardData.filter((s) => s.type === "land" && s.owner !== null && s.owner !== teamId && !(excludeLandmark && s.buildingTier === 4));
+  }
+
+  function onLandFortune(team) {
+    const card = fortuneCardData[Math.floor(Math.random() * fortuneCardData.length)];
+    const catClass = CARD_CATEGORY_CLASS[card.category] || "command";
+    openModal({
+      emoji: card.emoji, title: card.name,
+      body: `<span class="card-cat-tag cat-${catClass}">${card.category} 카드</span><br>${card.description}`,
+      theme: "fortune",
+      buttons: [{ label: "카드 확인! ✨", className: "btn-primary", onClick: () => { closeModal(); resolveFortuneCard(team, card); } }],
+    });
+  }
+
+  function resolveFortuneCard(team, card) {
+    switch (card.id) {
+      case "olympic": promptOlympicCardTarget(team); break;
+      case "worldtrip":
+        team.position = 21;
+        renderBoard();
+        handleLanding(team);
+        break;
+      case "goStart": {
+        team.money += SALARY_AMOUNT;
+        team.position = 0;
+        renderAll();
+        openModal({
+          emoji: "🚩", title: "집현전으로 GO!",
+          body: `${team.name}, 출발점으로 이동하며 월급 ${SALARY_AMOUNT.toLocaleString()}골드를 받았습니다!`,
+          buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+        });
+        break;
+      }
+      case "exile":
+        imprisonTeam(team, false);
+        break;
+      case "donation":
+        applyDonationCard(team);
+        break;
+      case "cityChange": promptCityChangeTarget(team); break;
+      case "forceSell": promptForceSellTarget(team); break;
+      case "forceAcquire": promptForceAcquireTarget(team); break;
+      case "earthquake": promptEarthquakeTarget(team); break;
+      case "angel": case "discount": case "exileFree":
+        addCardToInventory(team, card);
+        break;
+    }
+  }
+
+  function applyDonationCard(team) {
+    const poorest = teams.reduce((min, t) => (t.money < min.money ? t : min), teams[0]);
+    teams.forEach((t) => {
+      if (t.id !== poorest.id) {
+        t.money = Math.max(0, t.money - DONATION_AMOUNT);
+        poorest.money += DONATION_AMOUNT;
+      }
+    });
+    renderTeamCards();
+    openModal({
+      emoji: "💸", title: "불우이웃성금",
+      body: `모든 조가 꼴찌 ${poorest.name}에게 ${DONATION_AMOUNT.toLocaleString()}골드씩 지급했어요!`,
+      buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+    });
+  }
+
+  function promptOlympicCardTarget(team) {
+    const myLands = ownableLandsOf(team.id);
+    if (myLands.length === 0) {
+      openModal({
+        emoji: "🏛️", title: "올림픽/축제 개최",
+        body: "아직 보유한 땅이 없어서 축제를 열 수 없어요.",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = myLands.map((s) => `<option value="${s.id}">${s.name}</option>`).join("");
+    openModal({
+      emoji: "🏛️", title: "올림픽/축제 개최",
+      body: "축제를 열 내 땅을 골라주세요. 그 땅의 통행료가 2배가 돼요!",
+      customHTML: `<select id="fortune-olympic-select" class="teleport-select">${options}</select>`,
+      buttons: [{
+        label: "개최하기", className: "btn-primary",
+        onClick: () => {
+          const landId = Number(document.getElementById("fortune-olympic-select").value);
+          festival = { landId, multiplier: 2 };
+          updateFestivalDisplay();
+          closeModal();
+          advanceTurn(lastRollWasDouble);
+        },
+      }],
+    });
+  }
+
+  function promptCityChangeTarget(team) {
+    const myLands = ownableLandsOf(team.id);
+    const otherLands = ownableLandsOfOthers(team.id);
+    if (myLands.length === 0 || otherLands.length === 0) {
+      openModal({
+        emoji: "🔄", title: "도시 체인지",
+        body: "교환할 수 있는 땅이 부족해요. (내 땅과 상대 땅이 각각 1개 이상 필요해요)",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const myOptions = myLands.map((s) => `<option value="${s.id}">${s.name}</option>`).join("");
+    const otherOptions = otherLands.map((s) => `<option value="${s.id}">${s.name} (${teams[s.owner].name})</option>`).join("");
+    openModal({
+      emoji: "🔄", title: "도시 체인지",
+      body: "내가 내놓을 땅과 가져올 상대 땅을 각각 골라주세요.",
+      customHTML: `
+        <label style="display:block;font-weight:700;font-size:0.8rem;margin-bottom:0.3rem;">내가 내놓을 땅</label>
+        <select id="fortune-city-mine" class="teleport-select">${myOptions}</select>
+        <label style="display:block;font-weight:700;font-size:0.8rem;margin-bottom:0.3rem;">가져올 상대 땅</label>
+        <select id="fortune-city-theirs" class="teleport-select">${otherOptions}</select>
+      `,
+      buttons: [{
+        label: "교환하기", className: "btn-primary",
+        onClick: () => {
+          const myId = Number(document.getElementById("fortune-city-mine").value);
+          const theirId = Number(document.getElementById("fortune-city-theirs").value);
+          const mySq = boardData.find((s) => s.id === myId);
+          const theirSq = boardData.find((s) => s.id === theirId);
+          const otherTeam = teams[theirSq.owner];
+          closeModal();
+          maybeBlockAttack(otherTeam.id, () => {
+            mySq.owner = otherTeam.id;
+            theirSq.owner = team.id;
+            team.lands = team.lands.filter((id) => id !== myId).concat(theirId);
+            otherTeam.lands = otherTeam.lands.filter((id) => id !== theirId).concat(myId);
+            renderAll();
+            openModal({
+              emoji: "🔄", title: "교환 완료!",
+              body: `${team.name}의 <strong>${mySq.name}</strong>과(와) ${otherTeam.name}의 <strong>${theirSq.name}</strong>이(가) 서로 바뀌었어요!`,
+              buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); checkMonopolyWin(team); if (!gameEnded) advanceTurn(lastRollWasDouble); } }],
+            });
+          }, () => { advanceTurn(lastRollWasDouble); });
+        },
+      }],
+    });
+  }
+
+  function promptForceSellTarget(team) {
+    const otherLands = ownableLandsOfOthers(team.id);
+    if (otherLands.length === 0) {
+      openModal({
+        emoji: "🔨", title: "강제 매각",
+        body: "매각시킬 수 있는 상대 땅이 없어요.",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = otherLands.map((s) => `<option value="${s.id}">${s.name} (${teams[s.owner].name})</option>`).join("");
+    openModal({
+      emoji: "🔨", title: "강제 매각",
+      body: "반값에 강제로 매각시킬 상대 땅을 골라주세요.",
+      customHTML: `<select id="fortune-sell-select" class="teleport-select">${options}</select>`,
+      buttons: [{
+        label: "매각시키기", className: "btn-primary",
+        onClick: () => {
+          const targetId = Number(document.getElementById("fortune-sell-select").value);
+          const sq = boardData.find((s) => s.id === targetId);
+          const targetTeam = teams[sq.owner];
+          closeModal();
+          maybeBlockAttack(targetTeam.id, () => {
+            const compensation = Math.round(((sq.price + (sq.investedBuildingCost || 0)) * 0.5) / 1000) * 1000;
+            targetTeam.money += compensation;
+            targetTeam.lands = targetTeam.lands.filter((id) => id !== targetId);
+            sq.owner = null;
+            sq.buildingTier = 0;
+            sq.investedBuildingCost = 0;
+            renderAll();
+            openModal({
+              emoji: "🔨", title: "강제 매각 완료!",
+              body: `${targetTeam.name}의 <strong>${sq.name}</strong>이(가) ${compensation.toLocaleString()}골드에 강제 매각되어 빈 땅이 되었어요!`,
+              buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+            });
+          }, () => { advanceTurn(lastRollWasDouble); });
+        },
+      }],
+    });
+  }
+
+  function promptForceAcquireTarget(team) {
+    const otherLands = ownableLandsOfOthers(team.id);
+    if (otherLands.length === 0) {
+      openModal({
+        emoji: "🚩", title: "강제 인수",
+        body: "빼앗아올 수 있는 상대 땅이 없어요.",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = otherLands.map((s) => `<option value="${s.id}">${s.name} (${teams[s.owner].name})</option>`).join("");
+    openModal({
+      emoji: "🚩", title: "강제 인수",
+      body: "통행료만 내고 빼앗아올 상대 땅을 골라주세요.",
+      customHTML: `<select id="fortune-acquire-select" class="teleport-select">${options}</select>`,
+      buttons: [{
+        label: "빼앗아오기", className: "btn-primary",
+        onClick: () => {
+          const targetId = Number(document.getElementById("fortune-acquire-select").value);
+          const sq = boardData.find((s) => s.id === targetId);
+          const targetTeam = teams[sq.owner];
+          closeModal();
+          maybeBlockAttack(targetTeam.id, () => {
+            const tier = sq.buildingTier || 0;
+            const groupFull = isGroupFullyOwned(sq.group, targetTeam.id);
+            let toll = Math.round((sq.price * TOLL_RATE[tier]) / 1000) * 1000;
+            if (tier === 0 && groupFull) toll *= 2;
+            team.money = Math.max(0, team.money - toll);
+            targetTeam.money += toll;
+            targetTeam.lands = targetTeam.lands.filter((id) => id !== targetId);
+            sq.owner = team.id;
+            team.lands.push(targetId);
+            renderAll();
+            openModal({
+              emoji: "🚩", title: "강제 인수 완료!",
+              body: `${team.name}이(가) 통행료 ${toll.toLocaleString()}골드만 내고 ${targetTeam.name}의 <strong>${sq.name}</strong>을(를) 빼앗아왔어요!`,
+              buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); checkMonopolyWin(team); if (!gameEnded) advanceTurn(lastRollWasDouble); } }],
+            });
+          }, () => { advanceTurn(lastRollWasDouble); });
+        },
+      }],
+    });
+  }
+
+  function promptEarthquakeTarget(team) {
+    const targets = boardData.filter((s) => s.type === "land" && s.owner !== null && s.owner !== team.id && s.buildingTier > 0 && s.buildingTier < 4);
+    if (targets.length === 0) {
+      openModal({
+        emoji: "⚡", title: "재앙/지진",
+        body: "건물을 파괴할 수 있는 상대 땅이 없어요.",
+        buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+      });
+      return;
+    }
+    const options = targets.map((s) => `<option value="${s.id}">${s.name} (${teams[s.owner].name}, ${TIER_NAMES[s.buildingTier]})</option>`).join("");
+    openModal({
+      emoji: "⚡", title: "재앙/지진",
+      body: "건물을 1단계 파괴할 상대 땅을 골라주세요.",
+      customHTML: `<select id="fortune-quake-select" class="teleport-select">${options}</select>`,
+      buttons: [{
+        label: "파괴하기", className: "btn-primary",
+        onClick: () => {
+          const targetId = Number(document.getElementById("fortune-quake-select").value);
+          const sq = boardData.find((s) => s.id === targetId);
+          const targetTeam = teams[sq.owner];
+          closeModal();
+          maybeBlockAttack(targetTeam.id, () => {
+            const destroyedCost = getBuildCost(sq, sq.buildingTier);
+            sq.investedBuildingCost = Math.max(0, (sq.investedBuildingCost || 0) - destroyedCost);
+            sq.buildingTier -= 1;
+            renderAll();
+            openModal({
+              emoji: "⚡", title: "지진 발생!",
+              body: `${targetTeam.name}의 <strong>${sq.name}</strong> 건물이 1단계 파괴되었어요!`,
+              buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(lastRollWasDouble); } }],
+            });
+          }, () => { advanceTurn(lastRollWasDouble); });
+        },
+      }],
+    });
+  }
+
+  function maybeBlockAttack(targetTeamId, onProceed, onBlocked) {
+    if (hasCard(teams[targetTeamId], "angel")) {
+      openModal({
+        emoji: "👼", title: "천사 카드 발동?",
+        body: `${teams[targetTeamId].name}이(가) 천사 카드를 보유하고 있어요! 이 공격을 막으시겠어요?`,
+        buttons: [
+          {
+            label: "👼 막기 (카드 소모)", className: "btn-primary",
+            onClick: () => {
+              consumeCard(teams[targetTeamId], "angel");
+              renderTeamCards();
+              closeModal();
+              openModal({
+                emoji: "🛡️", title: "공격 차단!",
+                body: `${teams[targetTeamId].name}이(가) 천사 카드로 공격을 막았습니다!`,
+                buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); if (onBlocked) onBlocked(); } }],
+              });
+            },
+          },
+          { label: "그냥 진행", className: "btn-secondary", onClick: () => { closeModal(); onProceed(); } },
+        ],
+      });
+    } else {
+      onProceed();
+    }
+  }
+</script>
+<script>
+  // ============================================================
   // 무인도 탈출
   // ============================================================
   function openExileModal(team) {
     const buttons = [{ label: "🎲 더블 굴려서 탈출", className: "btn-primary", onClick: () => attemptExileDice(team) }];
+    if (hasCard(team, "exileFree")) {
+      buttons.push({
+        label: "🔓 탈출권 사용 (무료 탈출)", className: "btn-secondary",
+        onClick: () => {
+          consumeCard(team, "exileFree");
+          team.exileTurnsLeft = 0;
+          renderTeamCards();
+          closeModal();
+          openModal({
+            emoji: "🎉", title: "탈출 성공!", body: `${team.name}, 탈출권을 사용해 무료로 탈출했습니다!`,
+            buttons: [{ label: "확인", className: "btn-primary", onClick: () => { closeModal(); advanceTurn(false); } }],
+          });
+        },
+      });
+    }
     if (team.money >= EXILE_ESCAPE_FEE) {
       buttons.push({
         label: `💰 ${EXILE_ESCAPE_FEE.toLocaleString()}골드 내고 탈출`, className: "btn-secondary",
@@ -1296,29 +1711,24 @@
     if (gameEnded) return;
     const groupKeys = getGroupKeys();
     const sides = ["top", "right", "bottom", "left"];
-    const touristIds = boardData.filter((s) => s.type === "tourist").map((s) => s.id);
 
     const completeGroups = groupKeys.filter((g) => isGroupFullyOwned(g, team.id));
     const completeLines = sides.filter((s) => isLineFullyOwned(s, team.id));
-    const hasTourist = touristIds.length > 0 && touristIds.every((id) => boardData.find((s) => s.id === id).owner === team.id);
     const hasTriple = completeGroups.length >= 3;
     const hasLine = completeLines.length >= 1;
 
     let result = null;
-    if (hasLine && hasTourist) result = { label: "믹스 독점 (라인×관광지)", mult: 9 };
-    else if (hasTriple && hasLine) result = { label: "믹스 독점 (트리플×라인)", mult: 7 };
-    else if (hasTourist) result = { label: "관광지 독점", mult: 5 };
-    else if (hasLine) result = { label: "라인 독점", mult: 3 };
+    if (hasLine) result = { label: "라인 독점", mult: 3 };
     else if (hasTriple) result = { label: "트리플 독점", mult: 2 };
 
     if (result) {
       triggerMonopolyWin(team, result);
     } else {
-      checkNearMonopoly(team, groupKeys, sides, touristIds);
+      checkNearMonopoly(team, groupKeys, sides);
     }
   }
 
-  function checkNearMonopoly(team, groupKeys, sides, touristIds) {
+  function checkNearMonopoly(team, groupKeys, sides) {
     for (const g of groupKeys) {
       const ids = boardData.filter((s) => s.group === g).map((s) => s.id);
       if (missingCountForSet(ids, team.id) === 1) {
@@ -1332,9 +1742,6 @@
         showWarning(`⚠️ 독점 위기 경고! ${team.name}, ${SIDE_LABELS[side]} 라인 독점까지 땅 1칸 남았어요!`);
         return;
       }
-    }
-    if (touristIds.length > 0 && missingCountForSet(touristIds, team.id) === 1) {
-      showWarning(`⚠️ 독점 위기 경고! ${team.name}, 관광지 독점까지 땅 1칸 남았어요!`);
     }
   }
 
@@ -1417,7 +1824,8 @@
   // ============================================================
   // 공용 모달
   // ============================================================
-  function openModal({ emoji = "", title = "", body = "", customHTML = "", buttons = [] }) {
+  function openModal({ emoji = "", title = "", body = "", customHTML = "", buttons = [], theme = "" }) {
+    modalCardEl.className = "modal-card" + (theme ? " theme-" + theme : "");
     modalEmojiEl.textContent = emoji;
     modalTitleEl.textContent = title;
     modalBodyEl.innerHTML = body;
@@ -1447,7 +1855,7 @@
   const editorImportInput = document.getElementById("editor-import");
 
   function editableCells() {
-    return boardData.filter((s) => s.type === "land" || s.type === "tourist");
+    return boardData.filter((s) => s.type === "land");
   }
 
   function openEditor() {
@@ -1459,7 +1867,7 @@
 
   function renderEditorList() {
     editorListEl.innerHTML = editableCells().map((sq) => {
-      const tag = sq.type === "tourist" ? "관광지" : COLOR_GROUPS[sq.group].label;
+      const tag = COLOR_GROUPS[sq.group].label;
       return `
         <div class="editor-item" data-id="${sq.id}">
           <div class="editor-item-head">#${sq.id} <span class="editor-tag">${tag}</span></div>
@@ -1525,7 +1933,7 @@
         if (!Array.isArray(data)) throw new Error("배열 형식이 아니에요.");
         let updated = 0;
         data.forEach((item) => {
-          const sq = boardData.find((s) => s.id === item.id && (s.type === "land" || s.type === "tourist"));
+          const sq = boardData.find((s) => s.id === item.id && s.type === "land");
           if (!sq) return;
           if (typeof item.name === "string" && item.name.trim()) sq.name = item.name.trim();
           if (typeof item.price === "number" && item.price >= 0) sq.price = item.price;

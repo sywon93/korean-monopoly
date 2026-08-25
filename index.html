@@ -200,6 +200,30 @@
   }
   .editor-item textarea { min-height: 2.4rem; }
   .editor-footer { padding: 0.8rem 1.4rem 1.2rem; }
+
+  /* ---------- 게임 규칙 모달 ---------- */
+  .rules-overlay { position: fixed; inset: 0; background: rgba(90,70,50,0.4); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .rules-card {
+    background: var(--card-bg); border-radius: 26px; width: min(640px, 96vw); max-height: 90vh;
+    display: flex; flex-direction: column; box-shadow: 0 24px 50px rgba(90,70,50,0.35);
+  }
+  .rules-head { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 1.4rem 0.8rem; }
+  .rules-head h3 { margin: 0; font-size: 1.2rem; }
+  .rules-tabs { display: flex; gap: 0.4rem; padding: 0 1.2rem 0.8rem; flex-wrap: wrap; }
+  .rules-tab {
+    flex: 1 1 auto; background: var(--beige); color: var(--text-soft); border-radius: 999px; padding: 0.55rem 0.7rem;
+    font-weight: 800; font-size: 0.82rem; white-space: nowrap; transition: transform 0.15s;
+  }
+  .rules-tab.active { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); color: #6b2f45; box-shadow: 0 6px 14px rgba(255,158,187,0.4); transform: translateY(-1px); }
+  .rules-body { overflow-y: auto; padding: 0.4rem 1.4rem 1.4rem; }
+  .rules-panel { display: none; flex-direction: column; gap: 0.8rem; }
+  .rules-panel.active { display: flex; }
+  .rule-block { background: var(--cream); border: 2px solid #E9DFCE; border-radius: 16px; padding: 0.9rem 1.1rem; display: flex; gap: 0.7rem; align-items: flex-start; text-align: left; }
+  .rule-block .rule-icon { font-size: 1.5rem; line-height: 1; flex: 0 0 auto; }
+  .rule-block .rule-text { font-size: 0.9rem; line-height: 1.5; }
+  .rule-block .rule-text strong { color: var(--pink-deep); }
+  .rule-block .rule-title { font-weight: 800; margin-bottom: 0.15rem; display: block; }
+  .rule-reward { display: inline-block; background: var(--mint); color: #2f5a48; border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.78rem; font-weight: 800; margin-left: 0.3rem; }
 </style>
 </head>
 <body>
@@ -234,7 +258,8 @@
         <span class="stat-badge" id="turn-counter">턴 0/30</span>
         <span class="stat-badge" id="time-display">⏱ 30:00</span>
       </div>
-      <button class="teacher-btn" id="teacher-btn">⚙️</button>
+      <button class="teacher-btn" id="rules-btn" title="게임 규칙">📜</button>
+      <button class="teacher-btn" id="teacher-btn" title="선생님 제어판">⚙️</button>
     </div>
 
     <div class="main-area">
@@ -305,6 +330,84 @@
       <div class="editor-list" id="editor-list"></div>
       <div class="editor-footer">
         <button id="editor-apply" class="btn-primary btn-block">💾 변경사항 적용</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 게임 규칙 ============ -->
+  <div class="rules-overlay hidden" id="rules-overlay">
+    <div class="rules-card">
+      <div class="rules-head">
+        <h3>📜 게임 규칙</h3>
+        <button class="icon-close" id="rules-close">✕</button>
+      </div>
+      <div class="rules-tabs" id="rules-tabs">
+        <button class="rules-tab active" data-tab="basic">🎯 기본 룰</button>
+        <button class="rules-tab" data-tab="monopoly">🏆 승리 조건</button>
+        <button class="rules-tab" data-tab="building">🏗️ 건물&amp;인수</button>
+        <button class="rules-tab" data-tab="special">🚫 특별 룰</button>
+      </div>
+      <div class="rules-body">
+        <div class="rules-panel active" data-panel="basic">
+          <div class="rule-block">
+            <span class="rule-icon">🏆</span>
+            <div class="rule-text"><span class="rule-title">제한 턴 · 시간 종료 시 승리</span>제한 턴이나 제한 시간이 끝나면 <strong>총자산(잔여 골드 + 보유 땅·건물 가치)</strong>이 가장 많은 조가 승리해요.</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">💥</span>
+            <div class="rule-text"><span class="rule-title">파산 승리</span>상대 조를 모두 파산시키면 즉시 승리할 수 있어요.</div>
+          </div>
+        </div>
+        <div class="rules-panel" data-panel="monopoly">
+          <div class="rule-block">
+            <span class="rule-icon">🎨</span>
+            <div class="rule-text"><span class="rule-title">트리플 독점<span class="rule-reward">보상 2배</span></span>8개 컬러 구역 중 <strong>3개 컬러</strong>를 완전히 소유하면 즉시 승리!</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">📏</span>
+            <div class="rule-text"><span class="rule-title">라인 독점<span class="rule-reward">보상 3배</span></span>보드판 4개 라인(상/우/하/좌) 중 <strong>1개 라인의 모든 땅</strong>을 소유하면 즉시 승리!</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">🏝️</span>
+            <div class="rule-text"><span class="rule-title">관광지 독점<span class="rule-reward">보상 5배</span></span><strong>특별 관광지 땅을 모두</strong> 소유하면 즉시 승리!</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">✨</span>
+            <div class="rule-text"><span class="rule-title">믹스 독점<span class="rule-reward">보상 7~9배</span></span>위 조건을 동시에 두 가지 이상 달성하면 보상이 더욱 커져요!</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">⚠️</span>
+            <div class="rule-text"><span class="rule-title">독점 위기 경고</span>독점 조건까지 땅이 <strong>1칸</strong> 남으면 화면 상단에 경고 배너가 떠요!</div>
+          </div>
+        </div>
+        <div class="rules-panel" data-panel="building">
+          <div class="rule-block">
+            <span class="rule-icon">📝</span>
+            <div class="rule-text"><span class="rule-title">퀴즈로 건설</span>땅에 도착한 뒤 <strong>퀴즈를 맞히면</strong> 건물을 건설할 수 있어요.</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">🏠</span>
+            <div class="rule-text"><span class="rule-title">건물 4단계</span>🏠 1티어(별장) → 🏢 2티어(빌딩, 1바퀴 이후) → 🏨 3티어(호텔, 2바퀴 이후) → 👑 <strong>랜드마크</strong>(그룹 전체 호텔 후)</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">💰</span>
+            <div class="rule-text"><span class="rule-title">인수하기</span>상대 땅에 도착하면 <strong>(땅값 + 건물값) × 2</strong>를 내고 인수할 수 있어요.</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">🛡️</span>
+            <div class="rule-text"><span class="rule-title">인수 불가 지역</span>👑 <strong>랜드마크</strong>가 세워진 땅과 ⭐ <strong>관광지</strong>는 절대로 인수할 수 없어요!</div>
+          </div>
+        </div>
+        <div class="rules-panel" data-panel="special">
+          <div class="rule-block">
+            <span class="rule-icon">🚫</span>
+            <div class="rule-text"><span class="rule-title">외래어 금지</span>자기 턴에 영어·외래어를 사용하다 적발되면 <strong>벌금 5만 골드</strong>가 차감돼요!</div>
+          </div>
+          <div class="rule-block">
+            <span class="rule-icon">💰</span>
+            <div class="rule-text"><span class="rule-title">환곡(기부금)</span>적발된 벌금은 중앙 '환곡'에 쌓이고, <strong>환곡 칸</strong>에 도착한 조가 통째로 획득할 수 있어요.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1444,6 +1547,26 @@
     const file = e.target.files && e.target.files[0];
     if (file) importBoardJSON(file);
     editorImportInput.value = "";
+  });
+</script>
+<script>
+  // ============================================================
+  // 게임 규칙 모달
+  // ============================================================
+  const rulesBtn = document.getElementById("rules-btn");
+  const rulesOverlay = document.getElementById("rules-overlay");
+  const rulesClose = document.getElementById("rules-close");
+  const rulesTabsEl = document.getElementById("rules-tabs");
+
+  rulesBtn.addEventListener("click", () => rulesOverlay.classList.remove("hidden"));
+  rulesClose.addEventListener("click", () => rulesOverlay.classList.add("hidden"));
+
+  rulesTabsEl.querySelectorAll(".rules-tab").forEach((tabBtn) => {
+    tabBtn.addEventListener("click", () => {
+      const target = tabBtn.dataset.tab;
+      document.querySelectorAll(".rules-tab").forEach((b) => b.classList.toggle("active", b === tabBtn));
+      document.querySelectorAll(".rules-panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === target));
+    });
   });
 </script>
 </body>
